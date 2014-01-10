@@ -121,9 +121,33 @@
 	        <div id="chart">
 
 	        </div>
-	        Above is my chart
-	        <div id="deet">
-	        </div>
+	        <br>
+	        <table class="table table-striped table-bordered">
+	        	<thead>
+		        <tr>
+		            <th width="30%">Psite sequence</th>
+		            <th width="20%">Score wt</th>
+		            <th width="20%">Score mt</th>
+		            <th width="15%">Log ratio</th>
+		            <th width="15%">Effect</th>
+		        </tr>
+		    </thead>
+		    <tbody id="modal-table-body">
+				<tr>
+					<td id="modal-seq"></td>
+					<td id="modal-score-wt"></td>
+					<td id="modal-score-mt"></td>
+					<td id="modal-log-ratio"></td>
+					<td id="modal-effect"></td>
+				</tr>
+		    </tbody>
+	        </table>
+
+	        <br>
+	        <center>
+	        <img src="" id="modal-logo" alt="Modal sequence logo" style="width:75%"/>
+	        </center>
+
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -171,12 +195,36 @@
 				row = $(this).parents('tr');
 				gene = row.find('.gene-name').text();
 				mut = row.find('.mut-abbr').text();
+				seq = row.find('.sequence').html();
+				log = row.find('.log-ratio').text();
+				eff = row.find('.effect').html();
+
 				wt_score = +row.find('.wt-score').text();
 				mt_score = +row.find('.mt-score').text();
+
 				pwm = row.find('.seq-logo .name').text();
+				pwm_src = row.find('.seq-logo .logo').attr('src');
+
+				wt_dist = wt_score > mt_score ? "FG" : "BG";
+				mt_dist = mt_score > wt_score ? "FG" : "BG";
+
+				wt_perc = (+row.find('.wt-perc').text() * 100).toFixed(2);
+				mt_perc = (+row.find('.mt-perc').text() * 100).toFixed(2);
+
+				wt_score_p = wt_score + "<br>" + "<small>(" + wt_perc + "% " + wt_dist + ")</small>";
+				mt_score_p = mt_score + "<br>" + "<small>(" + mt_perc + "% " + mt_dist + ")</small>";
+
 				console.log(pwm);
+
 				$('#modal-title').text(gene + " " + mut);
-				$('#deet').text(wt_score + " " + mt_score);
+
+				$('#modal-seq').html(seq);
+				$('#modal-score-wt').html(wt_score_p);
+				$('#modal-score-mt').html(mt_score_p);
+				$('#modal-log-ratio').text(log);
+				$('#modal-effect').html(eff);
+
+				$('#modal-logo').attr('src', pwm_src);
 
 				$.getJSON("/assets/R/generate_data/density/"+pwm+".json",function(data){
         
@@ -212,11 +260,11 @@
 		          xaxes.render();
 
 		          c = cutoffs[pwm]
-		          addLine(graph, wt_score, 'green');
-		          addLine(graph, mt_score, 'red');
 
 		          addLine(graph, c.bg, 'black');
 		          addLine(graph, c.fg, 'black');
+		          addLine(graph, wt_score, 'green');
+		          addLine(graph, mt_score, 'red');
 
 				  $('#chart-modal').modal();
 		      
