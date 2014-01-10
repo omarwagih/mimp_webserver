@@ -1,0 +1,29 @@
+@(e: helper.FieldElements)
+
+@isType(e: helper.FieldElements, s: String) = @{
+    e.args.get('_type).getOrElse("none") == s
+}
+
+<div class="form-group @if(e.hasErrors){has-error}">
+	<label for="@e.id" class="col-sm-2 control-label"><abbr title="">@e.label</abbr>
+	@if(isType(e, "range")){
+		(<span class="range-perc" for="@e.id" id='@(e.id)_range'></span>%)
+	}
+	</label>
+	<div class="col-sm-10">
+		
+		@e.input
+
+		<p class="help-block error-block">
+			@if(e.hasErrors){
+				@e.errors.mkString(", ")
+			}
+		</p>
+    	
+        <p class="help-block">
+        	@e.infos.mkString(", ")
+        </p>
+
+	</div>
+
+</div>

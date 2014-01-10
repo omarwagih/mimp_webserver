@@ -1,0 +1,111 @@
+@(myForm: Form[Scan])
+
+@main("Scan", "Scan", "Scan sequences for gain and loss of signaling") {
+	<script>
+		
+	    $(function() {
+	    	$('#incl_ps-1').change(function(){
+		        if ($(this).is(':checked')) { $('.ps-data').addClass('hide');}
+		        else{$('.ps-data').removeClass('hide');}
+		    });
+		   $('#incl_ps-2').change(function(){
+		        if ($(this).is(':checked')) { $('.ps-data').removeClass('hide');}
+		        else{$('.ps-data').addClass('hide');}
+		    });
+		});
+	</script>
+	<div class="well">
+              <!--<form class="bs-example form-horizontal">-->
+              @helper.form(action = routes.Application.submit(), 'class -> "bs-example form-horizontal") {
+                <fieldset>
+                  <legend>Data input <a href="/scan/foo" class="pull-right">Run example</a></legend>
+                  
+                  
+                  @helper.input(myForm("fasta_data"), '_label -> null) { (id, name, value, args) =>
+                  <div class="form-group">
+                    <label for="@id" class="col-lg-2 control-label">Scan sequence</label>
+                    <div class="col-lg-10">
+                      <textarea id="@id" name="@id" rows="7"class="data-input form-control" placeholder="&gt;TP53                                                                                                                                                                                                                                        MEEPQSDPSVEPPLSQETFSDLWKLLPENNVLSPLPSQAMDDLMLSPDDIEQWFTEDPGPDEAPRMPEAAPPVAPAPAAPTPAAPAPAPSWPLSSSVPSQKTYQGSYGFRLGFLHSGTAKSVTCTYSPALNKMFCQLAKTCPVQLWVDSTPPPGTRVRAMAIYKQSQHMTEVVRRCPHHERCSDSDGLAPPQHLIRVEGNLRVEYLDDRNTFRHSVVVPYEPPEVGSDCTTIHYNYMCNSSCMGGMNRRPILTIITLEDSSGNLLGRNSFEVRVCACPGRDRRTEEENLRKKGEPHHELPPGSTKRALPNNTSSSPQPKKKPLDGEYFTLQIRGRERFEMFRELNEALELKDAQAGKEPGGSRAHSSHLKSKKGQSTSRHKKLMFKTEGPDSD">
+@value</textarea>
+					 </div>
+                  </div>
+                  }
+                  
+                  @helper.input(myForm("mut_data"), '_label -> null) { (id, name, value, args) =>
+                  <div class="form-group">
+                    <label for="@id" class="col-lg-2 control-label">Mutation data</label>
+                    <div class="col-lg-10">
+                      <textarea id="@id" name="@id" class="data-input form-control" rows="4" placeholder="e.g.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           TP53  R282W                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    TP53  A159V">
+@value</textarea>
+					 </div>
+                  </div>
+                  }
+                  
+                  @helper.input(myForm("incl_ps"), '_label -> null) { (id, name, value, args) =>
+                  <div class="form-group">
+                    <label class="col-lg-2 control-label">Phosphorylation data</label>
+                    <div class="col-lg-10">
+                      <div class="radio">
+                        <label>
+                          <input type="radio" name="@id" id="@id-1" value="no" checked="">
+                          Use all STY residues in my sequences as potential phosphosites
+                        </label>
+                      </div>
+                      <div class="radio">
+                        <label>
+                          <input type="radio" name="@id" id="@id-2" value="yes">
+                          Manually input phosphorylation sites
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  }
+                  
+                  @helper.input(myForm("ps_data"), '_label -> null) { (id, name, value, args) =>
+                  <div class="ps-data form-group hide">
+                    <label for="muts" class="col-lg-2 control-label"></label>
+                    <div class="col-lg-10">
+                      <textarea id="@id" name="@id" class="data-input form-control" rows="4" placeholder="e.g.                                                                                                                                                                                                                                          TP53  284                                                                                                                                                                                                                                                                                                                                                                                                                TP53  150"></textarea>
+					 </div>
+                  </div>
+                  }
+                  
+                  
+                  <div class="form-group hide">
+                  	<label class="col-lg-2 control-label" for="fpr_range">False positive rate cutoff (<span id="fpr_range">10</span>%)</label>
+                    <div class="col-lg-10">
+                    	<input  class="form-control" type="range" min="1" max="50" value="10" step="1" onchange="showValue(this.value, 'fpr_range')">
+					 </div>
+                  </div>
+                  
+                  @helper.input(myForm("a_min"), '_label -> null) { (id, name, value, args) =>
+                  <div class="form-group">
+                  	<label class="col-lg-2 control-label" for="a_min">α<sub>min</sub> cutoff (<span id="amin_range">@value</span>%)</label>
+                    <div class="col-lg-10">
+                    	<input id="@id" name="@id" class="form-control" type="range" min="1" max="50" value="@value" step="1" onchange="showValue(this.value, 'amin_range')">
+					 </div>
+                  </div>
+                  }
+                  
+                  @helper.input(myForm("a_max"), '_label -> null) { (id, name, value, args) =>
+                  <div class="form-group">
+                  	<label class="col-lg-2 control-label" for="a_max">α<sub>max</sub> cutoff (<span id="amax_range">@value</span>%)</label>
+                    <div class="col-lg-10">
+                    	<input id="@id" name="@id" class="form-control" type="range" min="1" max="50" value="@value" step="1" onchange="showValue(this.value, 'amax_range')">
+					 </div>
+                  </div>
+                  }
+                  <hr>
+                  <div class="form-group">
+                    <div class="col-lg-10 col-lg-offset-2">
+                      <button class="btn btn-default">Clear all</button> 
+                      <button type="submit" class="btn btn-primary">Submit</button> 
+                    </div>
+                  </div>
+                </fieldset>
+              }
+              <!--</form>-->
+            </div>
+	
+	
+}

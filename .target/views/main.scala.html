@@ -1,0 +1,98 @@
+@(title: String, header: String, subheader: String)(content: Html)
+
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>MIMP | @title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="@routes.Assets.at("stylesheets/bootstrap.css")" media="screen">
+    <link rel="stylesheet" href="@routes.Assets.at("stylesheets/bootswatch.min.css")">
+    <link rel="stylesheet" href="@routes.Assets.at("stylesheets/main.css")">
+    
+    <script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")"></script>
+    <script src="@routes.Assets.at("javascripts/jquery.csvToTable.js")"></script>
+    
+  </head>
+  <body style="padding-top:0px">
+  
+    <div class="navbar navbar-default navbar-fixed-top hide">
+      <div class="container">
+        <div class="navbar-header">
+          <a href="@routes.Application.index" class="navbar-brand @("active".when(title == "Home"))">MIMP</a>
+          <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        
+        <div class="navbar-collapse collapse" id="navbar-main">
+          <ul class="nav navbar-nav">
+            <li><a class="@("active".when(title == "Scan"))" href="@routes.Application.scan">Scan</a></li>
+            <li><a href="#">Download</a></li>
+            <li><a href="#">Help</a></li>
+            <li><a href="#">About</a> </li>
+          </ul>
+
+          <ul class="nav navbar-nav navbar-right">
+          </ul>
+
+        </div>
+      </div>
+    </div>
+
+
+    <div class="container">
+		
+		
+      <div class="page-header" id="banner">
+      	<center>
+  	  		<img src="@routes.Assets.at("images/mimp_logo.png")" style="height:90px" alt="MIMP logo"/>
+  	  		<div id="navcontainer">
+				<ul id="navlist">
+					<li><a class="@("active".when(title == "Home"))" href="@routes.Application.index">Home</a></li>
+					<li><a class="@("active".when(title == "Scan"))" href="@routes.Application.scan">Scan</a></li>
+            		<li><a href="#">Download</a></li>
+            		<li><a href="#">Help</a> </li>
+            		<li><a href="#">About</a> </li>
+				</ul>
+			</div>
+			<hr>
+  	  	</center>
+  	  	
+  	  	<div class="row">
+          <div class="col-lg-12">
+          	<h3 style="text-align:center; margin:0" class="featurette-heading"><span class="text-muted">@subheader</span></h3>
+          </div>  
+        </div>
+        
+      </div>
+	
+	  @content
+
+      <footer>
+        <div class="row">
+          <div class="col-lg-12">
+            
+            <ul class="list-unstyled">
+              <li><a href="#">GitHub</a></li>
+              <li><a href="#">CRAN</a></li>
+              <li><a href="#">Contact</a></li>
+            </ul>
+            <p>&copy; 2013 <a href="http://baderlab.com" target="_blank">Bader Lab</a>, University of Toronto </p>
+            <br>
+            <center>
+            <img src="@routes.Assets.at("images/footer_logo.png")" style="height:80px;opacity:.80"/>
+			</center>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+
+
+    <script src="@routes.Assets.at("javascripts/help.js")"></script>
+    <script src="@routes.Assets.at("javascripts/bootstrap.min.js")"></script>
+    <script src="@routes.Assets.at("javascripts/bootswatch.js")"></script>
+  
+</body></html>

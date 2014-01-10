@@ -1,0 +1,68 @@
+
+@main("Download", "MIMP", "Download MIMP and files") {
+
+  <h3>R package</h3>
+  <p>You can run MIMP locally by downloading the R package from <a href="#">CRAN</a> along with a <a href="#">pdf manual</a> on how to use it.</p>
+  
+
+  <h3>Datasets</h3>
+  <p>Below are freely available datasets used by MIMP</p>
+
+  <ul>
+  <li><a href="#">Kinase-substrate data</a></li>
+  <li><a href="#">Kinase-substrate data (refined)</a></li>
+  <li><a href="#">&alpha; cutoffs</a></li>
+  </ul>
+
+
+
+  <link type="text/css" rel="stylesheet" href="@routes.Assets.at("javascripts/plot/graph.css")">
+  <link type="text/css" rel="stylesheet" href="@routes.Assets.at("javascripts/plot/detail.css")">
+  <link type="text/css" rel="stylesheet" href="@routes.Assets.at("javascripts/plot/legend.css")">
+  <link type="text/css" rel="stylesheet" href="@routes.Assets.at("javascripts/plot/lines.css")">
+
+  <script src="@routes.Assets.at("javascripts/plot/d3.v3.js")"></script>
+  <script src="@routes.Assets.at("javascripts/plot/rickshaw.js")"></script>
+
+  <div id="chart">
+  </div>
+
+  <script>
+    $(document).ready(function(){
+      $.getJSON("/assets/R/generate_data/density/ATR.json",function(data){
+        
+        $('#chart').empty();
+        var graph = new Rickshaw.Graph( {
+            element: document.getElementById("chart"),
+            width: 750,
+            height: 250,
+            renderer: 'line',
+            fill: true,
+            stroke: true,
+            series: [
+              {
+                color: "#c05020",
+                data: data[0],
+                name: 'Background',
+                stroke: "#000000"
+              }, {
+                color: "blue",
+                data: data[1],
+                name: 'Foreground'
+              }
+            ]
+          } );
+          graph.renderer.unstack = true;
+          graph.render();
+
+          var xaxes = new Rickshaw.Graph.Axis.X( {
+            graph: graph
+          } );
+          xaxes.render();
+      
+      });
+    });
+  </script>
+
+  
+}

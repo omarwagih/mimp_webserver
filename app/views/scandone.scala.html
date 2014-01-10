@@ -1,0 +1,278 @@
+@(job: Scan)
+
+@main("Scan", "Scan", "Scan complete, see results below") {
+		
+		<link rel="stylesheet" type="text/css" href="@routes.Assets.at("datatable/main.css")">
+		<link rel="stylesheet" type="text/css" href="@routes.Assets.at("datatable/DT_bootstrap.css")">
+		
+		<script type="text/javascript" language="javascript" src="@routes.Assets.at("datatable/jquery.dataTables.js")"></script>
+		<script type="text/javascript" language="javascript" src="@routes.Assets.at("datatable/DT_bootstrap.js")"></script>
+		<script type="text/javascript" language="javascript" src="@routes.Assets.at("javascripts/jquery.zoom.min.js")"></script>
+
+		<style>
+			.path{
+				opacity:0.8;
+			}
+			.wt-score, .mt-score{
+				color: #18bc9c;
+				cursor: pointer; cursor: hand;
+			}
+
+			#loss-label, #gain-label{
+				cursor: pointer; cursor: hand;
+			}
+			.modal.modal-wide .modal-dialog {
+			  width: 660px;
+			}
+			.modal-wide .modal-body {
+			  overflow-y: auto;
+			}
+			table {
+		   	width: 200px; /*specify a width*/
+		   		table-layout:fixed;
+			}
+			.alert-box{
+				display:none;
+			}
+
+			div.row{
+				margin-bottom:5px;
+			}
+
+			thead tr th:nth-child(7){
+				display:none;
+			}
+			tbody tr td:nth-child(7){
+				display:none;
+			}
+			thead tr th:nth-child(8){
+				display:none;
+			}
+			tbody tr td:nth-child(8){
+				display:none;
+			}
+
+</style>
+	<div id="result-wrap">
+		<div style="margin-bottom: 35px">
+			<!--<center>-->
+			<span id="loss-label" class="label label-danger">Loss <span class="badge" id="loss-badge">0</span></span>
+			<span id="gain-label" class="label label-success">Gain <span class="badge" id="gain-badge">0</span></span>
+			<span class="label label-default">Mutations <span class="badge" id="mut-badge">0</span></span>
+			<!--</center>-->
+
+			<div class="pull-right">
+
+			<a target="_blank" class="label label-primary" href="/assets/jobs/@job.job_id/results.txt">Download results</a>
+			<a class="label label-primary" href="/scan">Start over</a>
+
+			</div>
+		</div>
+		
+		<div id="logo-zoom" style="display:none;position: fixed; z-index: 3; border: 2px solid #555">
+			<img src="" style="width:700px;background-color: white; "/>
+		</div>
+		<table class="table table-striped table-bordered" id="example" width="">
+		    <thead>
+		        <tr>
+		            <th width="8%">Gene</th>
+		            <th width="7%">Psite</th>
+		            <th width="7%">Mut.</th>
+		            <th width="0%">Dist.</th>
+		            <th width="17%">Psite sequence</th>
+		            <th width="9%">Score wt</th>
+		            <th width="9%">Score mt</th>
+		            <th width="0%">Perc wt</th>
+		            <th width="0%">Perc mt</th>
+		            <th width="10%">Log ratio</th>
+		            <th width="7%">Effect</th>
+		            <th width="28%">Sequence logo</th>
+		        </tr>
+		    </thead>
+		    <tbody id="table-body">
+				@Html(job.html)
+		    </tbody>
+		</table>
+	
+	</div>
+
+
+
+
+
+	<link type="text/css" rel="stylesheet" href="@routes.Assets.at("javascripts/plot/graph.css")">
+	<link type="text/css" rel="stylesheet" href="@routes.Assets.at("javascripts/plot/detail.css")">
+	<link type="text/css" rel="stylesheet" href="@routes.Assets.at("javascripts/plot/legend.css")">
+	<link type="text/css" rel="stylesheet" href="@routes.Assets.at("javascripts/plot/lines.css")">
+
+	<script src="@routes.Assets.at("javascripts/plot/d3.v3.js")"></script>
+	<script src="@routes.Assets.at("javascripts/plot/rickshaw.js")"></script>
+
+
+	<!-- Modal -->
+	<div class="modal fade modal-wide" id="chart-modal" tabindex="-1" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <h4 class="modal-title" id="modal-title">Modal title</h4>
+	      </div>
+	      <div class="modal-body">
+	        <div id="chart">
+
+	        </div>
+	        Above is my chart
+	        <div id="deet">
+	        </div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+
+
+	<script>
+		addLine = function(graph, x, col){
+			var svg = d3.select("svg");
+
+			var myLine = svg.append("svg:line")
+			    .attr("x1", graph.x(x))
+			    .attr("y1", graph.y(0))
+			    .attr("x2", graph.x(x))
+			    .attr("y2", graph.y(100))
+			    .style("stroke", col)
+			    .style("stroke-width", 1.5);
+			return myLine;
+		}
+
+		var updateZoom = function(){
+				console.log('Zoom updated!');
+				$('img.logo')
+				.wrap('<span style="display:inline-block;"></span>')
+				.css('display', 'block')
+				.parent()
+				.zoom({
+				    onZoomIn: function(){
+					    $(this).siblings().css('visibility', 'hidden');
+				    },
+				    onZoomOut: function(){
+					    $(this).siblings().css('visibility', 'visible');
+				    }
+				    
+				});
+			}
+
+		update = function(){
+			updateZoom();
+
+			$( ".wt-score, .mt-score" ).click(function(){
+				row = $(this).parents('tr');
+				gene = row.find('.gene-name').text();
+				mut = row.find('.mut-abbr').text();
+				wt_score = +row.find('.wt-score').text();
+				mt_score = +row.find('.mt-score').text();
+				pwm = row.find('.seq-logo .name').text();
+				console.log(pwm);
+				$('#modal-title').text(gene + " " + mut);
+				$('#deet').text(wt_score + " " + mt_score);
+
+				$.getJSON("/assets/R/generate_data/density/"+pwm+".json",function(data){
+        
+		        $('#chart').empty();
+		        var graph = new Rickshaw.Graph( {
+		            element: document.getElementById("chart"),
+		            width: 600,
+		            height: 250,
+		            renderer: 'line',
+		            fill: true,
+		            stroke: true,
+		            series: [
+		              {
+		                color: "#718B7D",
+		                data: data[0],
+		                name: 'Background',
+		                stroke: "#000000",
+		            	opacity: 0.5
+		              }, {
+		                color: "#446074",
+		                data: data[1],
+		                name: 'Foreground',
+		            	opacity: 0.5
+		              }
+		            ]
+		          } );
+		          graph.renderer.unstack = true;
+		          graph.render();
+
+		          var xaxes = new Rickshaw.Graph.Axis.X( {
+		            graph: graph
+		          } );
+		          xaxes.render();
+
+		          c = cutoffs[pwm]
+		          addLine(graph, wt_score, 'green');
+		          addLine(graph, mt_score, 'red');
+
+		          addLine(graph, c.bg, 'black');
+		          addLine(graph, c.fg, 'black');
+
+				  $('#chart-modal').modal();
+		      
+		      	});
+
+			});//End click
+
+		}
+
+		$(document).ready(function(){
+			if($('.dataTable').length == 0){
+				$('#example').dataTable( {
+					"sDom": "<'row'<'.col-md-6'l><'.col-md-6'f>r>t<'row'<'.col-md-6'i><'.col-md-6'p>>",
+					"sPaginationType": "bootstrap",
+					"oLanguage": {"sLengthMenu": "_MENU_ records per page"},
+					"fnDrawCallback": function( oSettings ) { console.log( 'DataTables has redrawn the table' ); update();  }
+				} );
+			}
+			if($('#n_loss').length > 0) $('#loss-badge').text($('#n_loss').text());
+			if($('#n_gain').length > 0) $('#gain-badge').text($('#n_gain').text());
+			if($('#n_mut').length > 0) $('#mut-badge').text($('#n_mut').text());
+				
+			// Show only gain or only loss on click of label
+			$('#gain-label').click(function(){
+				$('#search-input').val('Gain').trigger('keyup.DT');
+				$('#search-input').focus();
+			});
+			$('#loss-label').click(function(){
+				$('#search-input').val('Loss').trigger('keyup.DT');
+				$('#search-input').focus();
+			});
+				
+			$(document).keydown(function(e){
+			    if (e.keyCode == 37) { 
+			       console.log( "left pressed" );
+			       $('.previous a').click();
+			       return false;
+			    }
+			    if (e.keyCode == 39) { 
+			       console.log( "right pressed" );
+			       $('.next a').click();
+			       return false;
+			    }
+			});
+
+			if($('.dataTables_empty').length == 1){
+				//$('#result-wrap').html('<h1 class="text-danger">Sorry no results returned</h1>');
+				//$('#no-results').html('<h2 class="text-danger">Sorry no results returned. <a href="#">Go back</a></h2>');
+			}
+			fnShowHide(3);
+
+			update();
+		});
+		
+	</script>
+
+	<script src="/assets/jobs/@job.job_id/cutoffs.txt"></script>
+
+}

@@ -1,0 +1,51 @@
+
+@main("Help", "MIMP", "Help") {
+
+  <h4>What is MIMP?</h4>
+  <div id="1">
+    <p>Mutations IMpact on Phsophorylation (MIMP) is a web service that predicts if a mutation within a phosphorylation site will alter phosphorylation. MIMP works by constructing specificity models for kinases, which are then used to score phosphosites containing a mutation before and after the mutation to predict the impact it may have on phosphorylation. There are three types of events that can occur</p>
+    <ul>
+    <li>Loss-of-signalling: the mutation disrupts specificity for a kinase</li>
+    <li>Gain-of-signalling: the mutation creates a new motif which causes phosphorylation by a new kinase</li>
+    <li>Switch-of-signalling: a combination of loss and gain, where a mutation causes the loss of phosphorylation for one kinase and a gain of phosphorylation by another</li>
+    </ul>
+
+    <img src="@routes.Assets.at("images/fig1.png")" style="height:200px">
+  </div>
+
+
+  <h4>What are the &alpha;- and &alpha;+ cutoffs?</h4>
+  <p>Once a score is obtained for both the wildtype and mutant phosphosite, MIMP will use kinase specificity models to score phosphosites that belong to a kinase (positive) and that do not (negative). This results in two distributions being generated: foreground and background. &alpha;- and &alpha;+ represent percentiles of the foreground and background distributions, respectively. In order for a loss-of-signalling event to occur, the score of the wildtype phosphosite must be greater than the score at the &alpha;+ percentile and the score of the mutant phosphosite must be less than the score at the &alpha;- percentile. This is vice versa for gain-of-signalling.
+  </p>
+  <p>
+
+  By default, &alpha;- is the 90th percentile and &alpha;+ is 10th percentile:
+  </p>
+
+  <img src="#" style="width:400px; height:200px">
+
+  <h4>What do the scores mean?</h4>
+  <p>The scores quantitatively represent how well a phosphosite is likely to be bound by a kinase. Scores range from 0-1, where 0 represents no predicted binding and 1 represents perfect binding.</p>
+
+  <h4>What does the log ratio mean?</h4>
+  <p>The log ratio measures how distant the wildtype score is from the mutant, which we use as a measure of how confident we are of an event occurring. A high positive log ratio represents a high confidence gain-of-signaling event. A high negative log ratio represents a high confidence loss-of-signaling event. We consider the following confidence intervals for the absolute value of the log ratio:</p>
+  <ul>
+  <li>Low confidence: 0-1</li>
+  <li>Medium confidence 1-2</li>
+  <li>High confidence: 2 or greater</li>
+  </ul>
+
+  <h4>Can I use MIMP offline?</h4>
+  <p>Yes. MIMP is freely available as an R package, which can be run locally. You can find more information on how to obtain the R package on the <a target="_blank" href="/download">download page</a></p>
+
+  <h4>I have a large amount of data, how can I speed up the process?</h4>
+  <p>If you are processing a large amount of data, we recommend downloading and running MIMP locally. Please refer to the <a target="_blank" href="/download">download page</a> for more information on how to download MIMP.</p>
+
+  <h4>I can't find my kinase of interest, what should I do?</h4>
+  <p>MIMP uses up-to-date data from <a target="_blank" href="http://phospho.elm.eu.org/">PhosphoELM</a>, <a target="_blank" href="http://www.phosphosite.org/">PhosphoSite Plus</a>, <a target="_blank" href="http://www.hprd.org/">HPRD</a> and <a target="_blank" href="http://phosphonetworks.org/">PhosphoNetwork</a>. If your kinase is not available it is likely that there is insufficient kinase-substrate data available to construct a specificty model. If you are able to provide sufficient kinase-substrate data for your kinase, please <a target="_blank" href="#">contact us</a>.</p>
+
+  <h4>I'm having trouble with MIMP that isn't addressed on this page. What should I do?</h4>
+  <p>If you are having trouble with MIMP please <a target="_blank" href="#">contact us</a> and we will try resolve it.</p>
+
+
+}
