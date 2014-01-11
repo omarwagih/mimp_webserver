@@ -49,10 +49,11 @@ public class Application extends Controller {
         return ok(scan.render(newform));
     }
     
-    public static Result show_job(String jobid){
+    public static Result show_job(String jobid) throws IOException{
     	Scan job = getJobFromJsonFile(jobid);
     	if(job == null) return TODO;
-    	
+
+    	job.html = Help.readFile(Application.jobPath(job.job_id) + "html.txt");
     	return ok(scandone.render(job));
     }
 
@@ -123,7 +124,9 @@ public class Application extends Controller {
     public static boolean writeJsonJobToFile(Scan job) {
         try {
             JsonNode jn = Json.toJson(job);
-            Help.writeFile(jn.toString(), jobPath(job.job_id) +job.job_id+".json");
+            String path = jobPath(job.job_id) +job.job_id+".json";
+            Logger.info("Writing job to: "+path);
+            Help.writeFile(jn.toString(), path);
             return true;
         } catch (Exception e) {
             return false;

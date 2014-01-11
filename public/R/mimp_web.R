@@ -4,12 +4,12 @@ options(warn=-1) #suppress warnings
 
 
 option_list <- list(
-    make_option(c("-f", "--fasta"), help="Fasta file" ),
-    make_option(c("-m", "--mut"), help="Mutation data", default=NULL),
-    make_option(c("-p", "--phos"), help="Phosphorylation data" ),
-    make_option(c("-i", "--amin"), help="Lower percentile", type="integer", default=5),
-    make_option(c("-j", "--amax"), help="Upper percentile" , type="integer", default=5),
-    make_option(c("-u", "--jobid"), help="Job ID")
+make_option(c("-f", "--fasta"), help="Fasta file" ),
+make_option(c("-m", "--mut"), help="Mutation data", default=NULL),
+make_option(c("-p", "--phos"), help="Phosphorylation data" ),
+make_option(c("-i", "--amin"), help="Lower percentile", type="integer", default=5),
+make_option(c("-j", "--amax"), help="Upper percentile" , type="integer", default=5),
+make_option(c("-u", "--jobid"), help="Job ID")
 )
 
 # Parse the agruments
@@ -34,4 +34,4 @@ html = dohtml(data, '/assets/images/logos/');
 writeLines(html, html_path);
 
 # Output html for java
-writeLines(html);
+# writeLines(html);

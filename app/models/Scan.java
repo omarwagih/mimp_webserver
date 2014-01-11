@@ -59,7 +59,7 @@ public class Scan implements Runnable {
 	        File mut_file = File.createTempFile(UUID.randomUUID().toString(), ".tmp"); 
 	        FileUtils.writeStringToFile(mut_file, mut_data);
 	        
-	        String cmd = "RScript public/R/mimp_web.R ";
+	        String cmd = "Rscript public/R/mimp_web.R ";
 	        cmd = cmd + "--fasta " + fasta_file.getAbsolutePath() + " ";
 	        cmd = cmd + "--mut " + mut_file.getAbsolutePath() + " ";
 	        if(incl_ps.equals("yes")){
@@ -72,6 +72,7 @@ public class Scan implements Runnable {
 	        cmd = cmd + "--jobid " + job_id + " ";
 	        
 	        
+	        
 	        StringBuilder shellOutput = new StringBuilder();
 	        Process p = Runtime.getRuntime().exec(cmd);
 
@@ -82,8 +83,11 @@ public class Scan implements Runnable {
 	        while ((line = in.readLine()) != null) {
 	            shellOutput.append(line + "\n");
 	        }
+	        
 	        Logger.info(cmd);
-	    	html = Help.readFile(Application.jobPath(job_id) + "html.txt");
+	        //Runtime.getRuntime().exec(cmd);
+
+	    	//html = Help.readFile(Application.jobPath(job_id) + "html.txt");
 	    	
 	    	Application.writeJsonJobToFile(this);
 		} catch (Exception e) {
