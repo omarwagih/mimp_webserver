@@ -23,6 +23,14 @@ function(ks, neg.list, save.dir){
   save(cutoffs, file=file.path(save.dir, 'cutoffs.rsav'))
 }
 
+# Removes minority of ST or Y p-sites using frequency counts from the first argument or second argument (if provided)
+#
+# Args:
+#   seqs: p-site sequences (15mers)
+#   seqs2: p-site sequences (15mers)
+#
+# Returns:
+#   Input sequences with minority ST or Y central residue removed
 .removeMinority <- function(seqs, seqs2){
   cent = substr(seqs, 8,8)
   if(missing(seqs2)){
@@ -40,6 +48,13 @@ function(ks, neg.list, save.dir){
   return(seqs)
 }
 
+# Majority count of ST or Y
+#
+# Args:
+#   x: p-site sequences (15mers)
+#
+# Returns:
+#   S, T or Y depending on which is most occuring central residue
 .maj <- function(x){
   x = substr(x,8,8)
   return(names(which.max(table(x))))
@@ -101,7 +116,16 @@ function(ks, neg.list, save.dir){
   return(pos2)
 }
 
-
+# Get flanking sequence around central residues
+#
+# Args:
+#   seqs: p-site sequences (15mers)
+#   inds: indicies of central residues
+#   flank: number of residues to the left and to the right
+#   empty.char: charachter to be placed for terminals
+#
+# Returns:
+#   p-site 15mer sequences
 .flankingSequence <- function(seqs, inds, flank=7, empty.char='-'){
   if(length(seqs) == 1 & length(inds) >= length(seqs)) seqs = rep(seqs, length(inds))
   if(length(seqs) != length(inds)) stop('Length of sequences must be equal to length of positions')
@@ -116,6 +140,7 @@ function(ks, neg.list, save.dir){
   })
   return(ret)
 }
+
 .htmlSeq <- function(s, dist){
   s = strsplit(s,'')[[1]]
   s[8] = sprintf('<a class="psite">%s</a>', s[8])
@@ -167,6 +192,19 @@ function(ks, neg.list, save.dir){
   return(mut.ps)
 }
 
+# Construct a position weight matrix from sequences
+#
+# Args:
+#   seqs: p-site sequences (15mers)
+#   pseudocount: pseudocount factor
+#   log.bg: set to TRUE if should compute log of relative frequency / bg
+#   relative.freq: set to TRUE if should compute relative frequencies of columns
+#   type: type of sequence AA or DNA 
+#   priors: background proteome priors
+#   pwm.priors: priors in form of a PWM
+#
+# Returns:
+#   Position weight matrix
 .PWM <- function(seqs, pseudocount=0.001, log.bg=F, relative.freq=T, type='AA', 
                 priors=c(A=0.070, R=0.056, N=0.036, D=0.048,C=0.023,Q=0.047,E=0.071,G=0.066,H=0.026,I=0.044,
                          L=0.100,K=0.058,M=0.021,F=0.037,P=0.063,S=0.083,T=0.053,W=0.012,Y=0.027,V=0.060), 
@@ -247,6 +285,8 @@ function(ks, neg.list, save.dir){
   colnames(pwm.matrix) = 1:num.pos
   return(pwm.matrix)
 }
+
+
 .replaceStr <- function(seq, replacement, index){
   sp = strsplit(seq, '')
   ret = sapply(sp, function(s){
@@ -255,6 +295,15 @@ function(ks, neg.list, save.dir){
   })
   return(ret)
 }
+
+# Returns vector of values in PWM matching sequences
+#
+# Args:
+#   seqs: p-site sequences (15mers)
+#   pwm: position weight matrix
+#
+# Returns:
+#   vector of values in PWM matching sequences
 .scoreArray <- function(seqs, pwm){
   # Split sequence
   sp = strsplit(seqs, '')
@@ -274,6 +323,16 @@ function(ks, neg.list, save.dir){
   return(dat)
 }
 
+# Score sequences using LOG method
+#
+# Args:
+#   seqs: p-site sequences (15mers)
+#   pwm: position weight matrix
+#   ignore.central: TRUE if central residue (STY in phosphorylation) should not be included in score
+#   central.res: regex of central residue to keep * for all, S for Serine only, S|T for serine or threonine, etc.
+#
+# Returns:
+#   Numerical vector of scores, named with corresponding 15mers
 .scoreLOG <- function(seqs, pwm, ignore.central=T, central.res="*"){
   # Get central residue index
   central.ind = ceiling(ncol(pwm)/2)
@@ -292,6 +351,17 @@ function(ks, neg.list, save.dir){
   return(scores)
 }
 
+# Score sequences using MSS method from MATCHTM algorithm 
+# See pubmed:12824369
+#
+# Args:
+#   seqs: p-site sequences (15mers)
+#   pwm: position weight matrix
+#   ignore.central: TRUE if central residue (STY in phosphorylation) should not be included in score
+#   central.res: regex of central residue to keep * for all, S for Serine only, S|T for serine or threonine, etc.
+#
+# Returns:
+#   Numerical vector of scores, named with corresponding 15mers
 .scoreMSS <- function(seqs, pwm, ignore.central=T, central.res="*"){
   
   # Central residue index
@@ -327,6 +397,17 @@ function(ks, neg.list, save.dir){
   return(scores)
 }
 
+# Score sequences using MSS or LOG method 
+#
+# Args:
+#   seqs: p-site sequences (15mers)
+#   pwm: position weight matrix
+#   method: MSS or LOG, see respective functions
+#   ignore.central: TRUE if central residue (STY in phosphorylation) should not be included in score
+#   na.rm: TRUE if should remove na scores from output. NAs are generated for e.g. when scoring Y p-sites using ST PWM
+#
+# Returns:
+#   Numerical vector of scores, named with corresponding 15mers
 .scorePWM <- function(seqs, pwm, method='MSS', ignore.central=TRUE, na.rm=F){
   method = toupper(method)
   
@@ -348,16 +429,37 @@ function(ks, neg.list, save.dir){
   return(ret)
 }
 
+# Return the worst matching sequence of a PWM by AA with minimal value per column
+#
+# Args:
+#   pwm: position weight matrix
+#
+# Returns:
+#   Sequence the same length as number of rows of pwm
 .worstSequence <- function(pwm){
   w = rownames(pwm)[apply(pwm, 2, which.min)]
   return(paste(w, collapse=''))
 }
+
+# Return the best matching sequence of a PWM by AA with max value per column
+#
+# Args:
+#   pwm: position weight matrix
+#
+# Returns:
+#   Sequence the same length as number of rows of pwm
 .bestSequence <- function(pwm){
   b = rownames(pwm)[apply(pwm, 2, which.max)]
   return(paste(b, collapse=''))
 }
 
-
+# Read fasta formatted file. Copied from SeqinR package. See package for more info on parameters 
+#
+# Args:
+#   file: file containing fasta sequences
+#
+# Returns:
+#   Name list of label to sequence
 .read.fasta = function (file, 
           seqtype = c("DNA", "AA"), as.string = FALSE, forceDNAtolower = TRUE, 
           set.attributes = TRUE, legacy.mode = TRUE, seqonly = FALSE, 
