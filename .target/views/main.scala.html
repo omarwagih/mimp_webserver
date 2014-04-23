@@ -2,94 +2,150 @@
 
 <!DOCTYPE html>
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>MIMP | @title</title>
+    <title>MIMP &middot; @title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
-    <link rel="stylesheet" href="@routes.Assets.at("stylesheets/bootstrap.css")" media="screen">
+    <link rel="stylesheet" href="@routes.Assets.at("stylesheets/bootstrap_ow.css")">
     <link rel="stylesheet" href="@routes.Assets.at("stylesheets/bootswatch.min.css")">
     <link rel="stylesheet" href="@routes.Assets.at("stylesheets/main.css")">
     
     <script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")"></script>
     <script src="@routes.Assets.at("javascripts/jquery.csvToTable.js")"></script>
-    
+    <script src="@routes.Assets.at("javascripts/bootstrap-select.min.js")"></script>
+    <link rel="stylesheet" href="@routes.Assets.at("stylesheets/bootstrap-select.min.css")">
+
+    <script>
+      $( document ).ready(function() {
+         $('select').selectpicker();
+      });
+    </script>
+    <style>
+
+    body, textarea, label, .label, .badge, button{
+    	font-size: 16px;
+      font-weight: 300 !important;
+    }
+    .form-control{
+      font-size: 14px;
+      font-weight: 300;
+     }
+    .navbar-default .navbar-nav li.active > a{
+      color: #18bc9c;
+    }
+    .navbar-default .navbar-nav li > a:hover, .navbar-default .navbar-nav li.active > a:hover{
+      background-color: transparent;
+      font-size:20px;
+      color: #18bc9c;
+    }
+  .navbar-default .navbar-nav li > a{
+    background-color: transparent !important;
+    font-size:20px;
+    color: #2c3e50;
+    text-align: center;
+    font-family: Helvetica;
+    font-weight: 200;
+
+  -o-transition: color 0.2s linear;
+  -moz-transition: color 0.2s linear;
+  -khtml-transition: color 0.2s linear;
+  -webkit-transition: font-weight 0.2s linear;
+  -ms-transition: color 0.2s linear;
+  transition: color 0.2s linear;
+  }
+
+  
+  .navbar-default {
+    background-color: #ecf0f1;
+    /*background: #f1f1f1;*/
+    border-bottom: 1px solid #e8e8e8;
+  }
+
+  footer{
+    /*background-color: #ecf0f1;
+    border-top: 1px solid #e8e8e8;*/
+    margin-bottom: 0px;
+    padding-bottom: 20px;
+    border-top: 1px solid #e8e8e8;
+    padding-top: 20px;
+    margin-top: 60px;
+  }
+  element.style {
+}
+
+.pagination .disabled > a, .pagination .disabled > a:hover, .pagination .disabled > a:focus, .pagination .disabled > span {
+background-color: #18bc9c;
+}
+
+
+.clickable { cursor: pointer; cursor: hand; }
+
+    </style>
   </head>
   <body style="padding-top:0px">
   
-    <div class="navbar navbar-default navbar-fixed-top hide">
+
+    <!-- Static navbar -->
+    <div class="navbar navbar-default navbar-static-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
-          <a href="@routes.Application.index" class="navbar-brand @("active".when(title == "Home"))">MIMP</a>
-          <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
+          <a class="navbar-brand" href="@routes.Application.index">
+            <img src="@routes.Assets.at("images/mimp_logo.png")" style="height:60px" alt="MIMP logo"/>
+          </a>
         </div>
-        
-        <div class="navbar-collapse collapse" id="navbar-main">
-          <ul class="nav navbar-nav">
-            <li><a class="@("active".when(title == "Scan"))" href="@routes.Application.scan">Scan</a></li>
-            <li><a href="#">Download</a></li>
-            <li><a href="#">Help</a></li>
-            <li><a href="#">About</a> </li>
-          </ul>
-
+        <div class="navbar-collapse collapse" style="padding-top:20px">
+          
           <ul class="nav navbar-nav navbar-right">
+            <li><a class="@("active".when(title == "Scan"))" href="@routes.Application.scan">Scan</a></li>
+            <li><a class="@("active".when(title == "Download"))" href="@routes.Application.download">Download</a></li>
+            <li><a class="@("active".when(title == "Help"))" href="@routes.Application.help">Help</a></li>
+            <li><a class="@("active".when(title == "About"))" href="@routes.Application.about">About</a> </li>
           </ul>
-
-        </div>
+        </div><!--/.nav-collapse -->
       </div>
     </div>
+
 
 
     <div class="container">
 		
 		
-      <div class="page-header" id="banner">
-      	<center>
-  	  		<img src="@routes.Assets.at("images/mimp_logo.png")" style="height:90px" alt="MIMP logo"/>
-  	  		<div id="navcontainer">
-				<ul id="navlist">
-					<li><a class="@("active".when(title == "Home"))" href="@routes.Application.index">Home</a></li>
-					<li><a class="@("active".when(title == "Scan"))" href="@routes.Application.scan">Scan</a></li>
-            		<li><a href="#">Download</a></li>
-            		<li><a href="#">Help</a> </li>
-            		<li><a href="#">About</a> </li>
-				</ul>
-			</div>
-			<hr>
-  	  	</center>
-  	  	
-  	  	<div class="row">
+	   <div class="row">
           <div class="col-lg-12">
-          	<h3 style="text-align:center; margin:0" class="featurette-heading"><span class="text-muted">@subheader</span></h3>
+            <h3 class="text-muted" style="margin:0px; padding:0px; font-weight:200">@subheader</h3>
           </div>  
         </div>
-        
-      </div>
-	
+        <hr>
+
 	  @content
 
-      <footer>
-        <div class="row">
-          <div class="col-lg-12">
-            
-            <ul class="list-unstyled">
-              <li><a href="#">GitHub</a></li>
-              <li><a href="#">CRAN</a></li>
-              <li><a href="#">Contact</a></li>
-            </ul>
-            <p>&copy; 2013 <a href="http://baderlab.com" target="_blank">Bader Lab</a>, University of Toronto </p>
-            <br>
-            <center>
-            <img src="@routes.Assets.at("images/footer_logo.png")" style="height:80px;opacity:.80"/>
-			</center>
-          </div>
-        </div>
-        
-      </footer>
+      
+
     </div>
 
+    <footer>
+      <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          
+          <ul class="list-unstyled">
+            <li><a href="@routes.Application.download">Download</a></li>
+            <li><a target="_blank" href="https://github.com/omarwagih/mimp/issues">Issues</a></li>
+            <li><a href="@routes.Application.about">Contact</a></li>
+          </ul>
+          <p>&copy; 2013 <a href="http://baderlab.com" target="_blank">Bader Lab</a> University of Toronto </p>
+          <br>
+          <img src="@routes.Assets.at("images/footer_logo.png")" style="height:70px;margin-left:-5px"/>
+          
+        </div>
+      </div>
+      </div>
+    </footer>
 
     <script src="@routes.Assets.at("javascripts/help.js")"></script>
     <script src="@routes.Assets.at("javascripts/bootstrap.min.js")"></script>

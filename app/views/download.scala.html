@@ -9,12 +9,10 @@
   <p>Below are freely available datasets used by MIMP</p>
 
   <ul>
-  <li><a href="#">Kinase-substrate data</a></li>
-  <li><a href="#">Kinase-substrate data (refined)</a></li>
-  <li><a href="#">&alpha; cutoffs</a></li>
+  <li><a href="@routes.Application.getFlatFile("ks_all.fasta", "kinase_substrates_all.fasta")">Kinase-substrate data</a> <small>Substrates for each kinase</small></li>
+  <li><a href="@routes.Application.getFlatFile("ks_refined_90.fasta", "kinase_substrates_refined.fasta")">Kinase-substrate data (refined)</a> <small>Refined substrates for each kinase</small></li>
+  <li><a href="@routes.Application.getFlatFile("negative_psites.fasta", "negative_psites.fasta")">Negative phosphorylation data</a> <small>Flanking regions of S, T and Y residues not known to be phosphorylated</small></li>
   </ul>
-
-
 
   <link type="text/css" rel="stylesheet" href="@routes.Assets.at("javascripts/plot/graph.css")">
   <link type="text/css" rel="stylesheet" href="@routes.Assets.at("javascripts/plot/detail.css")">

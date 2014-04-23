@@ -10,23 +10,58 @@
     <li>Switch-of-signalling: a combination of loss and gain, where a mutation causes the loss of phosphorylation for one kinase and a gain of phosphorylation by another</li>
     </ul>
 
-    <img src="@routes.Assets.at("images/fig1.png")" style="height:200px">
+    <img src="@routes.Assets.at("images/fig1.png")" style="height:400px">
+  </div>
+
+  <hr>
+
+  <h4>How do I use it?</h4>
+  <div id="2">
+    <p>To use MIMP you will need two mandatory files and one optional file. </p>
+    
+    <ol>
+    	<li>FASTA file of protein sequences. For example: 
+    		<pre>>seq0
+FQTWEEFSRAAEKLYLADPMKVRVVLKYRHVDGNLCIKVTDDLVCLVYRTDQAQDVKKIEKF
+>seq1
+KYRTWEEFTRAAEKLYQADPMKVRVVLKYRHCDGNLCIKVTDDVVCLLYRTDQAQDVKKIEKFHSQLMRLME LKVTDNKECLKFKTDQAQEAKKMEKLNNIFFTLM</pre>
+    	
+    	</li>
+    	<li>Mutation data. This should contain the name of the protein and the mutation, space delimited. The mutation should have a X123Z format, where 'X' is the reference amino acid, 'Z' is the alternate amino acid and 123 is the position of the substitution. Protein names should correspond to that of the fasta file. For example:
+    	<pre>seq0 F1H
+seq1 T4V
+seq1 W5L</pre>
+    	
+    	</li>
+    	<li>Phosphorylation site data <b>(optional)</b>. This should contain the name of the protein and the position of phosphoacceptor S, T or Y residue, space delimited. Protein names should correspond to that of the fasta file. For example:
+    	<pre>seq0 8
+seq0 15
+seq1 9</pre>
+		All positions must correspond to an S, T or Y residue. If you are not providing phosphorylation site data, MIMP will consider each S, T or Y residue as a potential phosphoacceptor.
+    	</li>
+    <ol>
   </div>
 
 
-  <h4>What are the &alpha;- and &alpha;+ cutoffs?</h4>
-  <p>Once a score is obtained for both the wildtype and mutant phosphosite, MIMP will use kinase specificity models to score phosphosites that belong to a kinase (positive) and that do not (negative). This results in two distributions being generated: foreground and background. &alpha;- and &alpha;+ represent percentiles of the foreground and background distributions, respectively. In order for a loss-of-signalling event to occur, the score of the wildtype phosphosite must be greater than the score at the &alpha;+ percentile and the score of the mutant phosphosite must be less than the score at the &alpha;- percentile. This is vice versa for gain-of-signalling.
+  <hr>
+  
+  <h4>What are the &alpha; and &beta; cutoffs?</h4>
+  <p>Once a score is obtained for both the wildtype and mutant phosphosite, MIMP will use kinase specificity models to score phosphosites that belong to a kinase (positive) and that do not (negative). This results in two distributions being generated: foreground and background. &alpha; and &beta; represent percentiles of the foreground and background distributions, respectively. In order for a loss-of-signalling event to occur, the score of the wildtype phosphosite must be greater than the score at the &alpha; percentile and the score of the mutant phosphosite must be less than the score at the &beta; percentile. This is vice versa for gain-of-signalling.
   </p>
   <p>
 
-  By default, &alpha;- is the 90th percentile and &alpha;+ is 10th percentile:
+  By default, &beta; is the 90th percentile and &alpha; is 10th percentile:
   </p>
 
-  <img src="#" style="width:400px; height:200px">
+  <img src="@routes.Assets.at("images/fig3.png")" >
 
+  <hr>
+  
   <h4>What do the scores mean?</h4>
-  <p>The scores quantitatively represent how well a phosphosite is likely to be bound by a kinase. Scores range from 0-1, where 0 represents no predicted binding and 1 represents perfect binding.</p>
+  <p>The scores quantitatively represent how well a phosphosite is likely to be phosphorylated by a kinase. Scores range from 0-1, where 0 represents no predicted phosphorylation and 1 represents perfect phosphorylation.</p>
 
+  <hr>
+  
   <h4>What does the log ratio mean?</h4>
   <p>The log ratio measures how distant the wildtype score is from the mutant, which we use as a measure of how confident we are of an event occurring. A high positive log ratio represents a high confidence gain-of-signaling event. A high negative log ratio represents a high confidence loss-of-signaling event. We consider the following confidence intervals for the absolute value of the log ratio:</p>
   <ul>
@@ -35,15 +70,36 @@
   <li>High confidence: 2 or greater</li>
   </ul>
 
+
+  <hr>
+  
+  <h4>Useful tips</h4>
+  <p>There are many several features you may find useful in the results page:</p>
+  <ul>
+  	<li>Hover over the sequence logos to zoom in</li>
+  	<li>Click on the header of a column to sort</li>
+  	<li>Click on the score for a visual representation of where the scores and thresholds fall on the distributions</li>
+  	<li>Click loss or gain buttons to filter the type of event</li>
+  	<li>Type any keyword (e.g. protein name) in the "Search rows" box to filter the results</li>
+  </ul>
+
+  <hr>
+  
   <h4>Can I use MIMP offline?</h4>
   <p>Yes. MIMP is freely available as an R package, which can be run locally. You can find more information on how to obtain the R package on the <a target="_blank" href="/download">download page</a></p>
 
+  <hr>
+  
   <h4>I have a large amount of data, how can I speed up the process?</h4>
-  <p>If you are processing a large amount of data, we recommend downloading and running MIMP locally. Please refer to the <a target="_blank" href="/download">download page</a> for more information on how to download MIMP.</p>
+  <p>If you are processing a large amount of data, please download and run MIMP locally. Please refer to the <a target="_blank" href="/download">download page</a> for more information on how to download MIMP.</p>
 
+  <hr>
+  
   <h4>I can't find my kinase of interest, what should I do?</h4>
   <p>MIMP uses up-to-date data from <a target="_blank" href="http://phospho.elm.eu.org/">PhosphoELM</a>, <a target="_blank" href="http://www.phosphosite.org/">PhosphoSite Plus</a>, <a target="_blank" href="http://www.hprd.org/">HPRD</a> and <a target="_blank" href="http://phosphonetworks.org/">PhosphoNetwork</a>. If your kinase is not available it is likely that there is insufficient kinase-substrate data available to construct a specificty model. If you are able to provide sufficient kinase-substrate data for your kinase, please <a target="_blank" href="#">contact us</a>.</p>
 
+  <hr>
+  
   <h4>I'm having trouble with MIMP that isn't addressed on this page. What should I do?</h4>
   <p>If you are having trouble with MIMP please <a target="_blank" href="#">contact us</a> and we will try resolve it.</p>
 

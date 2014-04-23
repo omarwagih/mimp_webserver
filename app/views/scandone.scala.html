@@ -54,6 +54,10 @@
 
 </style>
 	<div id="result-wrap">
+		<div class="bs-callout bs-callout-info" id="info-msg-div">
+			<h4 id="info-msg"></h4>
+		</div>
+	
 		<div style="margin-bottom: 35px">
 			<!--<center>-->
 			<span id="loss-label" class="label label-danger">Loss <span class="badge" id="loss-badge">0</span></span>
@@ -63,7 +67,7 @@
 
 			<div class="pull-right">
 
-			<a target="_blank" class="label label-primary" href="/assets/jobs/@job.job_id/results.txt">Download results</a>
+			<a target="_blank" class="label label-primary" href="@routes.Application.getFile(job.job_id, "results.txt", "mimp_results.tsv")">Download results</a>
 			<a class="label label-primary" href="/scan">Start over</a>
 
 			</div>
@@ -121,7 +125,11 @@
 	        <div id="chart">
 
 	        </div>
-	        <br>
+	        
+	        <center>
+	        	<img id='modal-legend' src="@routes.Assets.at("images/hist_legend.svg")" style="height:20px; margin-top:5px; margin-bottom: 10px">
+			</center>
+	        
 	        <table class="table table-striped table-bordered">
 	        	<thead>
 		        <tr>
@@ -143,10 +151,12 @@
 		    </tbody>
 	        </table>
 
+			
 	        <br>
 	        <center>
 	        <img src="" id="modal-logo" alt="Modal sequence logo" style="width:75%"/>
 	        </center>
+	        
 
 	      </div>
 	      <div class="modal-footer">
@@ -158,6 +168,7 @@
 
 
 	<script>
+		
 		addLine = function(graph, x, col){
 			var svg = d3.select("svg");
 
@@ -167,30 +178,29 @@
 			    .attr("x2", graph.x(x))
 			    .attr("y2", graph.y(100))
 			    .style("stroke", col)
-			    .style("stroke-width", 1.5);
+			    .style("stroke-width", 2.5);
 			return myLine;
 		}
 
-		var updateZoom = function(){
-				console.log('Zoom updated!');
-				$('img.logo')
-				.wrap('<span style="display:inline-block;"></span>')
-				.css('display', 'block')
-				.parent()
-				.zoom({
-				    onZoomIn: function(){
-					    $(this).siblings().css('visibility', 'hidden');
-				    },
-				    onZoomOut: function(){
-					    $(this).siblings().css('visibility', 'visible');
-				    }
-				    
-				});
+		var updateZoom = function(x){
+				console.log('Zoom updated');
+				r = $('img.logo');
+				
+				r.wrap('<span id="logo-wrap" style="display:inline-block;"></span>')
+					.css('display', 'block')
+					.parent()
+					.zoom({
+					    onZoomIn: function(){
+						    $(this).siblings().css('visibility', 'hidden');
+					    },
+					    onZoomOut: function(){
+						    $(this).siblings().css('visibility', 'visible');
+					    }
+					});
+				
 			}
 
-		update = function(){
-			updateZoom();
-
+		update = function(x){
 			$( ".wt-score, .mt-score" ).click(function(){
 				row = $(this).parents('tr');
 				gene = row.find('.gene-name').text();
@@ -238,13 +248,13 @@
 		            stroke: true,
 		            series: [
 		              {
-		                color: "#718B7D",
+		                color: "#7f8c8d",
 		                data: data[0],
 		                name: 'Background',
 		                stroke: "#000000",
 		            	opacity: 0.5
 		              }, {
-		                color: "#446074",
+		                color: "#2c3e50",
 		                data: data[1],
 		                name: 'Foreground',
 		            	opacity: 0.5
@@ -261,8 +271,8 @@
 
 		          c = cutoffs[pwm]
 
-		          addLine(graph, c.bg, 'black');
-		          addLine(graph, c.fg, 'black');
+		          addLine(graph, c.bg, '#2980b9');
+		          addLine(graph, c.fg, '#8e44ad');
 		          addLine(graph, wt_score, 'green');
 		          addLine(graph, mt_score, 'red');
 
@@ -275,6 +285,9 @@
 		}
 
 		$(document).ready(function(){
+
+			updateZoom();
+
 			if($('.dataTable').length == 0){
 				$('#example').dataTable( {
 					"sDom": "<'row'<'.col-md-6'l><'.col-md-6'f>r>t<'row'<'.col-md-6'i><'.col-md-6'p>>",
@@ -291,11 +304,28 @@
 			$('#gain-label').click(function(){
 				$('#search-input').val('Gain').trigger('keyup.DT');
 				$('#search-input').focus();
+				$('#search-input').keyup();
 			});
 			$('#loss-label').click(function(){
 				$('#search-input').val('Loss').trigger('keyup.DT');
 				$('#search-input').focus();
+				$('#search-input').keyup();
 			});
+			
+			window.oTable = $('#example').dataTable();
+			$('#search-input').keyup(function() { 
+			    val = $('#search-input').val().toLowerCase();
+			    if(val == "gain" | val == "loss"){
+			    	$('#info-msg-div').show();
+			    	rows = oTable.fnSettings().fnRecordsDisplay();
+					$('#info-msg').text('Showing ' + rows + ' ' + val + ' events');
+			    }else{
+			    	$('#info-msg-div').hide();
+					$('#info-msg').empty();
+			    }
+			});
+			
+			$('#search-input').keyup();
 				
 			$(document).keydown(function(e){
 			    if (e.keyCode == 37) { 
@@ -310,10 +340,6 @@
 			    }
 			});
 
-			if($('.dataTables_empty').length == 1){
-				//$('#result-wrap').html('<h1 class="text-danger">Sorry no results returned</h1>');
-				//$('#no-results').html('<h2 class="text-danger">Sorry no results returned. <a href="#">Go back</a></h2>');
-			}
 			fnShowHide(3);
 
 			update();

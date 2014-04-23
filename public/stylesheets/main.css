@@ -1,4 +1,22 @@
+.bs-callout-info{
+background-color: #f4f8fa;
+border-color: #5bc0de;
+}
+.bs-callout {
+margin: 15px 0;
+margin-top: 10px;
+padding: 10px;
+padding-left: 30px;
+border-left: 8px solid #eee;
+margin-bottom: 25px;
+}
 
+.error-link{
+	color:#AA1505;
+}
+.error-link:hover{
+	color:#AA1505;
+}
 input[type='range'] {
     -webkit-appearance: none !important;
     -webkit-border-radius: 5px;

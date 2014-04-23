@@ -5,7 +5,8 @@
 }
 
 <div class="form-group @if(e.hasErrors){has-error}">
-	<label for="@e.id" class="col-sm-2 control-label"><abbr title="">@e.label</abbr>
+	<label for="@e.id" class="col-sm-2 control-label" data-toggle="tooltip" data-placement="bottom" title="@e.args.get('_tooltip)">
+		<abbr title="">@e.label</abbr>
 	@if(isType(e, "range")){
 		(<span class="range-perc" for="@e.id" id='@(e.id)_range'></span>%)
 	}
@@ -20,9 +21,11 @@
 			}
 		</p>
     	
+    	<!-- 
         <p class="help-block">
         	@e.infos.mkString(", ")
         </p>
+        -->
 
 	</div>
 

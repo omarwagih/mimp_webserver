@@ -1,9 +1,10 @@
 Package: MIMP
 Type: Package
-Title: Assessing the impact of single nucleotide variants on kinase-substrate phosphorylation
+Title: Predicting the impact of single nucleotide variants on kinase-substrate
+    phosphorylation
 Version: 1.0
 Date: 2013-10-29
 Author: Omar Wagih
-Maintainer: Omar Wagih <omar.wagih@utoronto.ca>
+Maintainer: Omar Wagih <wagih@ebi.ac.uk>
 Description: No description
 License: LGPL

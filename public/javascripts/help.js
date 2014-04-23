@@ -4,10 +4,11 @@ function showValue(newValue, span_id) {
 
 var addError = function(selector, message){
     $(selector).parents('.form-group').addClass('has-error');
-    $(selector).siblings('.help-block').text(message);
+    $(selector).siblings('.help-block').html(message);
 }
 
 var removeError = function(selector){
+	$(selector).parents('.form-group').find('.help-block').empty();
     $(selector).parents('.form-group').removeClass('has-error');
 }
 
@@ -17,16 +18,27 @@ $('#submitForm').click(function(event){
     removeError('#mut_data');
     removeError('#ps_data');
     valid = true;
+    
+    MUT_LIMIT = 5000;
+    if($('#mut_data').val().split('\n').length > MUT_LIMIT){
+    	jobidfield.show();
+    	jobidfield.find('label').css('visibility', 'hidden');
+    	jobidfield.find('.help-block').html('You have provided over '+MUT_LIMIT.toLocaleString()+' mutations. The web interface was designed to handle smaller analyses. To process a large number of mutations, please download the MIMP R package from the <a target="_blank" class="error-link" href="/download">download page</a> and use it locally.')
+    	jobidfield.addClass('has-error');
+    	window.scrollTo(0, 0);
+    	return;
+    }
+    
     if(!fastaValid()){
-        addError('#fasta_data', 'Invalid FASTA format! A more detailed error message to come!');
+        addError('#fasta_data', 'Invalid data! Please provide sequences in FASTA format. For more information see the <a class="error-link" target="_blank" href="/help">help page</a> or click "Load sample" for example data.');
         valid = false;
     }
     if(!mutValid()){
-        addError('#mut_data', 'Invalid mutation format! A more detailed error message to come!');
+        addError('#mut_data', 'Invalid mutation data! Please provide mutation data, line separated. For example, TP53 R282W. For more information see the <a class="error-link" target="_blank" href="/help">help page</a> or click "Load sample" for example data.');
         valid = false;
     }
     if($('#incl_ps-2').is(':checked') && !psValid()){
-        addError('#ps_data', 'Invalid phosphorylation format! A more detailed error message to come!');
+        addError('#ps_data', 'Invalid phosphosite data! Please provide phosphosite data, line separated. For example, TP53 150. For more information see the <a class="error-link" target="_blank" href="/help">help page</a>.');
         valid = false;
     }
     if(!valid) return;

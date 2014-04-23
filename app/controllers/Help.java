@@ -7,9 +7,57 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import play.libs.Json;
 
 public class Help {
+	
+
+	public static Map<String, String> readFasta(String fasta){
+		String[] lines = fasta.split("\n");
+		String name = "";
+		
+		Map<String, String> ret = new HashMap<String, String>();
+		for(String line : lines){
+			
+			line = line.trim();
+			if(line.startsWith(">")){
+				name = line.split("\\s|\\|")[0].trim();
+				name = name.replaceAll("^>", "");
+			}else{
+				if(ret.containsKey(name)) 
+		    		ret.put(name, ret.get(name) + line);
+		    	else
+		    		ret.put(name, line);
+			}
+		    
+		}
+		return(ret);
+	}
+	
+	
+	public static int countLines(String filename) throws IOException {
+	    InputStream is = new BufferedInputStream(new FileInputStream(filename));
+	    try {
+	        byte[] c = new byte[1024];
+	        int count = 0;
+	        int readChars = 0;
+	        boolean empty = true;
+	        while ((readChars = is.read(c)) != -1) {
+	            empty = false;
+	            for (int i = 0; i < readChars; ++i) {
+	                if (c[i] == '\n') {
+	                    ++count;
+	                }
+	            }
+	        }
+	        return (count == 0 && !empty) ? 1 : count;
+	    } finally {
+	        is.close();
+	    }
+	}
+	
         public static boolean isDouble(String str){
                 try{
                         Double.parseDouble(str);
