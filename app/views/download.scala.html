@@ -2,16 +2,18 @@
 @main("Download", "MIMP", "Download MIMP and files") {
 
   <h3>R package</h3>
-  <p>You can run MIMP locally by downloading the R package from <a href="#">CRAN</a> along with a <a href="#">pdf manual</a> on how to use it.</p>
+  <p>You can run MIMP locally by installing the R package from <a href="#">Github</a> along with a <a href="#">pdf manual</a> on how to use it.</p>
   
 
   <h3>Datasets</h3>
   <p>Below are freely available datasets used by MIMP</p>
 
   <ul>
-  <li><a href="@routes.Application.getFlatFile("ks_all.fasta", "kinase_substrates_all.fasta")">Kinase-substrate data</a> <small>Substrates for each kinase</small></li>
-  <li><a href="@routes.Application.getFlatFile("ks_refined_90.fasta", "kinase_substrates_refined.fasta")">Kinase-substrate data (refined)</a> <small>Refined substrates for each kinase</small></li>
-  <li><a href="@routes.Application.getFlatFile("negative_psites.fasta", "negative_psites.fasta")">Negative phosphorylation data</a> <small>Flanking regions of S, T and Y residues not known to be phosphorylated</small></li>
+  <li><a href="@routes.Application.getFlatFile("tcga_rewiring_events.tab", "tcga_rewiring_events.tab")">TCGA rewiring events</a> <small>Pre-computed rewiring events for TCGA pan-cancer SNVs as a tab-delimited file</small></li>
+  <li><a href="@routes.Application.getFlatFile("ks_all.fasta", "kinase_substrates_all.fasta")">Kinase-substrate data</a> <small>Substrates for each kinase before iterative refinement in FASTA format</small></li>
+  <li><a href="@routes.Application.getFlatFile("ks_refined_90.fasta", "kinase_substrates_refined.fasta")">Kinase-substrate data (refined)</a> <small>substrates for each kinase after iterative refinement in FASTA format</small></li>
+  <li><a href="@routes.Application.getFlatFile("refined_logos_multipage.pdf", "mimp_sequence_logos.pdf")">Sequence logos</a> <small>Sequence logos for all 362 kinases used by MIMP. Sequence logos are generated using <a target="_blank" href="http://cran.r-project.org/web/packages/RWebLogo/index.html">RWebLogo</a>.</small></li>
+  <li><a href="@routes.Application.getFlatFile("negative_psites.fasta", "negative_psites.fasta")">Negative phosphorylation data</a> <small>Flanking regions of S, T and Y residues not known to be phosphorylated in FASTA format</small></li>
   </ul>
 
   <link type="text/css" rel="stylesheet" href="@routes.Assets.at("javascripts/plot/graph.css")">

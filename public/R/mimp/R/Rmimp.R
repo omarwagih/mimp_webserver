@@ -153,6 +153,12 @@ PWM <- function(seqs, pseudocount=0.001, relative.freq=T, type='AA', priors=AA_P
   attr(pwm.matrix, 'ic10') = ic10
   attr(pwm.matrix, 'ic2') = ic2
   
+  # shannon entropy from http://en.wikipedia.org/wiki/Sequence_logo
+  Hi = apply(pwm.matrix, 2, function(col) - sum(col * log2(col), na.rm=T) )
+  en = (1/log(2)) * ( (20 - 1)/ (2*length(seqs)) )
+  shan = log2(20) - Hi #+ en
+  attr(pwm.matrix, 'shannon') = shan
+  
   # Assign AA names to rows/pos col
   rownames(pwm.matrix) = namespace
   colnames(pwm.matrix) = 1:num.pos
@@ -240,7 +246,7 @@ mss <- function(seqs, pwm, is.kinase.pwm=T, na.rm=F, ignore.ind=8){
     score.final
   })
   
-  if(central.res == '*'){
+  if(central.res != '*'){
     keep = grepl(central.res, substr(seqs, central.ind, central.ind))
     scores[!keep] = NA
   }
