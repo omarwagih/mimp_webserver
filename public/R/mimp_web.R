@@ -16,7 +16,7 @@ ARGS=parse_args(OptionParser(option_list = option_list));
 
 # Process without output
 sink("/dev/null"); 
-data = mimp(muts=ARGS$mut, seqs=ARGS$fasta, psites=ARGS$phos, perc.bg=ARGS$beta, perc.fg=ARGS$alpha, display.results=F)
+data = mimp(muts=ARGS$mut, seqs=ARGS$fasta, psites=ARGS$phos, perc.bg=ARGS$beta, perc.fg=ARGS$alpha, display.results=F, include.cent=T)
 sink()
 
 

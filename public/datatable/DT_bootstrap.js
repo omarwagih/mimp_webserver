@@ -148,22 +148,6 @@ if ( $.fn.DataTable.TableTools ) {
 }
 
 
-/* Table initialisation */
-// $(document).ready(function() {
-// 	// Only do it if we dont have a dataTable already
-// 	if($('.dataTable').length == 0){
-// 		$('#example').dataTable( {
-// 			"sDom": "<'row'<'.col-md-6'l><'.col-md-6'f>r>t<'row'<'.col-md-6'i><'.col-md-6'p>>",
-// 			"sPaginationType": "bootstrap",
-// 			"oLanguage": {"sLengthMenu": "_MENU_ records per page"}//,
-// 			//"fnDrawCallback": function( oSettings ) { alert( 'DataTables has redrawn the table' ); }
-// 		} );
-// 	}else{
-// 		$('.row').hide();
-// 		$('.alert-box').hide();
-// 	}
-
-// } );
 
 function fnShowHide( iCol ){
 	/* Get the DataTables object again - this is not a recreation, just a get of the object */
@@ -172,5 +156,56 @@ function fnShowHide( iCol ){
 	var bVis = oTable.fnSettings().aoColumns[iCol].bVisible;
 	oTable.fnSetColumnVis( iCol, bVis ? false : true );
 }
+
+/* Table initialisation */
+$(document).ready(function() {
+
+				///sets up numeric sorting of links
+jQuery.fn.dataTableExt.oSort['num-html-asc']  = function(a,b) {
+    var x = a.replace( /<.*?>/g, "" );
+    var y = b.replace( /<.*?>/g, "" );
+    x = parseFloat( x );
+    if ( isNaN( x ) ) { x = Infinity; };
+    y = parseFloat( y );
+    if ( isNaN( y ) ) { y = Infinity; };
+    return ((x < y) ? -1 : ((x > y) ?  1 : 0));
+};
+ 
+jQuery.fn.dataTableExt.oSort['num-html-desc'] = function(a,b) {
+    var x = a.replace( /<.*?>/g, "" );
+    var y = b.replace( /<.*?>/g, "" );
+    x = parseFloat( x );
+    if ( isNaN( x ) ) { x = Infinity; };
+    y = parseFloat( y );
+    if ( isNaN( y ) ) { y = Infinity; };
+    return ((x < y) ?  1 : ((x > y) ? -1 : 0));
+};
+
+	// Only do it if we dont have a dataTable already
+	if($('.dataTable').length == 0){
+		$('#example').dataTable( {
+			"sDom": "<'row'<'.col-md-6'l><'.col-md-6'f>r>t<'row'<'.col-md-6'i><'.col-md-6'p>>",
+			"sPaginationType": "bootstrap",
+			"oLanguage": {"sLengthMenu": "_MENU_ records per page"},
+			"aoColumns": [ null,  //Gene
+				null, //Psite
+				null, //Mut
+				null, //Dist
+				null, //Psite-seq
+				{ "sType" : "num-html" }, //WT-score
+				{ "sType" : "num-html" }, //MT-score
+				{ "sType" : "num-html" }, //WT-perc
+				{ "sType" : "num-html" }, //MT-perc
+				{ "sType" : "num-html" }, //LogRatio
+				null, //Effect
+				null //PWM/logo
+				]
+		} );
+	}else{
+		$('.row').hide();
+		$('.alert-box').hide();
+	}
+
+} );
 
 
