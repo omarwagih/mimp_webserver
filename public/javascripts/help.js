@@ -1,3 +1,10 @@
+Array.prototype.unique = function() {
+    var o = {}, i, l = this.length, r = [];
+    for(i=0; i<l;i+=1) o[this[i]] = this[i];
+    for(i in o) r.push(o[i]);
+    return r;
+};
+
 function showValue(newValue, span_id) {
 	document.getElementById(span_id).innerHTML=newValue;
 }
@@ -19,8 +26,9 @@ $('#submitForm').click(function(event){
     removeError('#ps_data');
     valid = true;
     
-    MUT_LIMIT = 5000;
-    if($('#mut_data').val().split('\n').length > MUT_LIMIT){
+    mut_data = $('#mut_data').val().split('\n').unique();
+    MUT_LIMIT = 2000;
+    if(mut_data.length > MUT_LIMIT){
     	jobidfield.show();
     	jobidfield.find('label').css('visibility', 'hidden');
     	jobidfield.find('.help-block').html('You have provided over '+MUT_LIMIT.toLocaleString()+' mutations. The web interface was designed to handle smaller analyses. To process a large number of mutations, please download the MIMP R package from the <a target="_blank" class="error-link" href="/download">download page</a> and use it locally.')
@@ -28,6 +36,8 @@ $('#submitForm').click(function(event){
     	window.scrollTo(0, 0);
     	return;
     }
+    // Set mutation data to be the unique ones
+    $('#mut_data').val(mut_data.join('\n'));
     
     if(!fastaValid()){
         addError('#fasta_data', 'Invalid data! Please provide sequences in FASTA format. For more information see the <a class="error-link" target="_blank" href="/help">help page</a> or click "Load sample" for example data.');

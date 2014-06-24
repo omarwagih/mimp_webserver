@@ -5,8 +5,8 @@
   <div id="1">
     <p>Mutations IMpact on Phsophorylation (MIMP) is a web service that predicts if a mutation within a phosphorylation site will alter phosphorylation. MIMP works by constructing specificity models for kinases, which are then used to score phosphosites containing a mutation before and after the mutation to predict the impact it may have on phosphorylation. There are three types of events that can occur</p>
     <ul>
-    <li>Loss-of-signalling: the mutation disrupts specificity for a kinase</li>
-    <li>Gain-of-signalling: the mutation creates a new motif which causes phosphorylation by a new kinase</li>
+    <li>Loss-of-binding: the mutation disrupts specificity for a kinase</li>
+    <li>Gain-of-binding: the mutation creates a new motif which causes phosphorylation by a new kinase</li>
     </ul>
 
     <img src="@routes.Assets.at("images/fig1.png")" style="height:400px">
@@ -24,15 +24,15 @@
 FQTWEEFSRAAEKLYLADPMKVRVVLKYRHVDGNLCIKVTDDLVCLVYRTDQAQDVKKIEKF
 >seq1
 KYRTWEEFTRAAEKLYQADPMKVRVVLKYRHCDGNLCIKVTDDVVCLLYRTDQAQDVKKIEKFHSQLMRLME LKVTDNKECLKFKTDQAQEAKKMEKLNNIFFTLM</pre>
-    	
+    		<p><em>Note:</em> Avoid using spaces in your fasta headers. If spaces are used, MIMP will use the text before the first space as the header. For example, <code>>seq more text</code> will become <code>>seq</code>. If you do use spaces in your headers, make sure your mutation and phosphorylation data correspond to the equivalent of <code>>seq</code> in this case.</p>
     	</li>
-    	<li>Mutation data. This should contain the name of the protein and the mutation, space delimited. The mutation should have a X123Z format, where 'X' is the reference amino acid, 'Z' is the alternate amino acid and 123 is the position of the substitution. Protein names should correspond to that of the fasta file. For example:
+    	<li>Mutation data. This should contain the name of the protein and the mutation, space delimited. The mutation should have a <code>X123Z</code> format, where <code>X</code> is the reference amino acid, <code>Z</code> is the alternate amino acid and <code>123</code> is the position of the substitution. Protein names should correspond to that of the fasta file. For example:
     	<pre>seq0 F1H
 seq1 T4V
 seq1 W5L</pre>
     	
     	</li>
-    	<li>Phosphorylation site data <b>(optional)</b>. This should contain the name of the protein and the position of phosphoacceptor S, T or Y residue, space delimited. Protein names should correspond to that of the fasta file. For example:
+    	<li>Phosphorylation site data <b>(optional but recommended)</b>. This should contain the name of the protein and the position of phosphoacceptor S, T or Y residue, space delimited. Protein names should correspond to that of the fasta file. For example:
     	<pre>seq0 8
 seq0 15
 seq1 9</pre>
@@ -57,7 +57,8 @@ seq1 9</pre>
   <hr>
   
   <h4>What do the scores mean?</h4>
-  <p>The scores quantitatively represent how well a phosphosite is likely to be phosphorylated by a kinase. Scores range from 0-1, where 0 represents no predicted phosphorylation and 1 represents perfect phosphorylation.</p>
+  <p>The scores quantitatively represent how well a phosphosite is likely to be phosphorylated by a kinase. Scores range from 0-1, where 0 represents no predicted phosphorylation and 1 represents perfect phosphorylation. 
+  <br>If a peptide has a score of -1, this means it cannot be assigned a score because the central residue has been mutated to or from a non STY residue and a kinase will never phosphorylate it. For example, <code>HAWNKDR<u>T</u>QIAICPN</code> will have a score between 0-1, while <code>HAWNKDR<u>A</u>QIAICPN</code> will have a score of -1.</p>
 
   <hr>
   
@@ -68,6 +69,7 @@ seq1 9</pre>
   <li>Medium confidence 1-2</li>
   <li>High confidence: 2 or greater</li>
   </ul>
+  <p><em>Note:</em> If the log ratio has a value of <code>-</code>, this means a log ratio cannot be assigned due to the fact that one of the scores has a value of -1. You can assume this log ratio is of high confidence <em>i.e.</em> approaches infinity (for gains) or -infinity (for losses)</p>
 
 
   <hr>
