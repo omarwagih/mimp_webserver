@@ -96,6 +96,7 @@ public class Application extends Controller {
         Scan job = filledForm.get();
         
         Logger.info("JOB HAS ID = "+ job.job_id);
+        Logger.info("FAM MODELS = "+ job.fam_models);
     	//job.job_id = 
         String jobid = UUID.randomUUID().toString();
         if(job.job_id != ""){
@@ -110,8 +111,6 @@ public class Application extends Controller {
         }else{
         	job.job_id = jobid;
         }
-        
-        
         
         
         Logger.info(job.toString());

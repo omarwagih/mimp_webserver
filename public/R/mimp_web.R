@@ -9,14 +9,19 @@ option_list <- list(
   make_option(c("-p", "--phos"), help="Phosphorylation data" ),
   make_option(c("-i", "--beta"), help="Lower percentile", type="integer", default=90),
   make_option(c("-j", "--alpha"), help="Upper percentile" , type="integer", default=10),
+  make_option(c("-x", "--fam"), help="Use kinase family models", action='store_true'),
   make_option(c("-u", "--jobid"), help="Job ID")
 )
 # Parse the agruments
 ARGS=parse_args(OptionParser(option_list = option_list));
+fam = ifelse(is.null(ARGS$fam), FALSE, TRUE )
+ARGS$fam = fam
+print(ARGS)
 
 # Process without output
 sink("/dev/null"); 
-data = mimp(muts=ARGS$mut, seqs=ARGS$fasta, psites=ARGS$phos, perc.bg=ARGS$beta, perc.fg=ARGS$alpha, display.results=F, include.cent=T)
+data = mimp(muts=ARGS$mut, seqs=ARGS$fasta, psites=ARGS$phos, perc.bg=ARGS$beta, perc.fg=ARGS$alpha, 
+            display.results=F, include.cent=T, family.models = ARGS$fam)
 sink()
 
 
@@ -34,7 +39,8 @@ if(nrow(data) == 0){
   js = paste0('cutoffs = {', js, '}');
   writeLines(js, cutoffs_path)
   
-  html = dohtml(data, '/assets/images/logos/')
+  logo_path = ifelse(ARGS$fam,  '/assets/images/logos_fam/',  '/assets/images/logos/')
+  html = dohtml(data, logo_path)
   writeLines(html, html_path)
 }
 

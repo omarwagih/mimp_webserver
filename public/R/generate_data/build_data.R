@@ -2,18 +2,41 @@ require(parallel)
 require(seqinr)
 
 
+
+
+#print(load('neg.ps.data.10000.rsav'))
+#print(load('pp.data.new.rsav'))
+
+setwd('~/Desktop/MSc project/rewiring/data/new/')
+
+ps.data = readRDS('psites_combined_mapped_08_2014.rds')
+mut.data = readRDS('tcga_mut_data_raw.rds')
+sc.data = readRDS('../../results/new/sc_kin_new_2014.rsav')
+
+
+map = readRDS('gene2nm_longest_iso.rds')
+map = unlist(split(map$rseq, map$gene))
+mut.data$gene_acc = map[mut.data$gene]
+
+sc.data = sc.data[,c('gene', 'gene_acc', 'n_sample', 'cancer_types', 'mut','kinase', 'position', 'npmid', 'mut.dist', 'flank.wt', 'flank.mt', 'wt.score', 'mt.score', 'pwm', 'effect', 'log.ratio')]
+names(sc.data) = gsub('\\.', '_', names(sc.data))
+neg.list = readRDS('neg_phosphosites_10k_uniq_noterm.rds')
+
+
+
+ks = readRDS('ksr_final_08_2014.rds')
+ks_ref = readRDS('ksr_refined_90p.rds')
+ks_fam = readRDS('ksr_family_final_08_2014.rds')
+ks_fam_ref = readRDS('ksr_family_refined_90p.rds')
+
+#-----------------------------------------------------
+
 setwd('~/Development/mimp_webserver/public/R/generate_data/')
 source('build_func.R')
 source('~/Development/mimp/R/Rmimp.R')
 
-stop('x')
-print(load('neg.ps.data.10000.rsav'))
-print(load('pp.data.new.rsav'))
-
-
-
 # Percentile refine all models
-if(T){
+if(F){
   ks_all = tapply(pp[[1]], pp[[2]], c)
   ks_all = cleanKS(ks_all, min.seqs=10)
   names(ks_all) = sapply(names(ks_all), function(i){
@@ -29,75 +52,33 @@ if(T){
   names(ks_ref) = names(ks_all)
   ks = ks_ref
   saveRDS(ks, 'ks_refined_90.rsav')
-  
-  # Write fasta files
-  ks_all_fa = lapply(ks_all, function(x) strsplit(paste0(x, collapse=''), '')[[1]])
-  write.fasta(ks_all_fa, names=names(ks_all), file.out='ks_all.fasta', nbchar=15)
-  
-  ks_refined_fa = lapply(ks, function(x) strsplit(paste0(x, collapse=''), '')[[1]])
-  write.fasta(ks_refined_fa, names=names(ks), file.out='ks_refined_90.fasta', nbchar=15)
-  
-  
-  ks_refined_fa = lapply(ks, function(x) strsplit(paste0(x, collapse=''), '')[[1]])
-  write.fasta(ks_refined_fa, names=names(ks), file.out='ks_refined_90.fasta', nbchar=15)
-  
-  
-  z = neg.list
-  names(z) = c(sprintf('%s negative background psites', names(z)))
-  z = lapply(z, function(x) strsplit(paste0(x, collapse=''), '')[[1]])
-  write.fasta(z, names=names(z), file.out='negative_psites.fasta', nbchar=15)
+
 }
 
-# Read in refined sequences
-ks = readRDS('ks_refined_90.rsav')
 
-# Generate PWM models
-writeLines(sprintf('Computing %s PWMs', length(ks)))
-pwms = lapply(ks, PWM)
-
-
-# Compute background and foreground distributions
-writeLines('Computing distributions')
-dist = lapply(names(pwms), function(n){
-  pwm = pwms[[n]]
-  z = getPosNeg(ks, neg.list, n)
-  fg = mss(z$pos, pwm, na.rm=T)
-  bg = mss(z$neg, pwm, na.rm=T)
-  list(fg=fg, bg=bg)
-})
-names(dist) = names(pwms)
+write.ksr <- function(ksr, file.out){
+  ksr = lapply(ksr, function(x) strsplit(paste0(x, collapse=''), '')[[1]])
+  write.fasta(ksr, names=names(ksr), file.out=file.out, nbchar=15)
+}
 
 
-# Percentile rank functions
-writeLines('Computing percentile rank functions')
-perc_fg = lapply(dist, function(n){
-  ecdf(n$fg)
-})
+write.ksr(ks, 'ks_all.fasta')
+write.ksr(ks_ref, 'ks_refined_90.fasta')
+write.ksr(ks_fam, 'ks_fam_all.fasta')
+write.ksr(ks_fam_ref, 'ks_fam_refined_90.fasta')
 
-perc_bg = lapply(dist, function(n){
-  ecdf(sample(n$bg, 500))
-})
-perc = list(fg=perc_fg, bg=perc_bg)
+z = neg.list
+names(z) = c(sprintf('%s negative background psites', names(z)))
+write.ksr(z, 'negative_psites.fasta')
 
 
-# Compute cutoffs
-writeLines('Computing cutoffs')
-sq = seq(0,1,0.01)
-cutoffs = lapply(dist, function(n){
-  a_fg = quantile(n$fg, sq)
-  a_bg = quantile(n$bg, sq)
-  list(fg=a_fg, bg=a_bg)
-})
 
+write.table(sc.data, file = 'tcga_rewiring_events.tab', quote = F, sep = '\t', row.names=F, col.names=T)
+write.table(ps.data, file = 'phosphorylation_data.tab', quote = F, sep = '\t', row.names=F, col.names=T)
+write.table(mut.data[,c('gene', 'gene_acc', 'cancer_type', 'sample_id', 'wt_residue', 'mut_residue', 'position')], 
+            file = 'mutation_data.tab', quote = F, sep = '\t', row.names=F, col.names=T)
 
-writeLines('Combining all data into list ...')
-data = list(pwms=pwms, 
-            perc=perc, 
-            cutoffs=cutoffs)
-
-saveRDS(data, file='../mimp/inst/extdata/mimp_data.rds')
-
-
+stop('x')
 # Density distributions in json format for webserver
 js <- function(z){
   d = density(z)
@@ -106,38 +87,121 @@ js <- function(z){
   return( paste0('[{', paste0('"x":', x, ', "y":',y, collapse='},{'), '}]') )
 }
 
-writeLines('Computing density distributions')
-dir.create(file.path('density'), recursive=T)
-dens = sapply(names(dist), function(name){
-  n = dist[[name]]
-  x = paste0('[', js(n$bg), ',', js(n$fg), ']')
-  writeLines(x, file.path('density', paste0(name, '.json')))
-})
 
-
-
-stop('Done')
-
-bestPercSample <- function(x, n.samples=1000, sample.size=500){
-  v = seq(0,1,0.01)
-  actual = ecdf(x)(v)
-  
-  # Generate the samples
-  samples = lapply(1:n.samples, function(i){
-    sample(x, sample.size)
-  })
-  
-  # Sum squared difference
-  sse = sapply(samples, function(s){
-    approx = ecdf(s)(v)
-    sum( (approx - actual)^2 )
-  })
-  
-  best = samples[[which.min(sse)]]
-  worst = samples[[which.max(sse)]]
-  
-  return(best)
+maj <- function(x){
+  x = substr(x,8,8)
+  return(names(which.max(table(x))))
 }
 
-# require(RWebLogo)
-#plotBatchLogos(ks, '/Users/omarwagih/Desktop/percentile_refine/')
+getPosNeg <- function(ks, neg, name){
+  pos = ks[[name]]
+  m = maj(pos)
+  if(m == 'S' | m == 'T') neg = neg$ST
+  if(m == 'Y') neg = neg$Y
+  
+  return(list(pos=pos, neg=neg))
+}
+
+require(RWebLogo)
+
+processKSR <- function(ks, is.fam=F){
+  set.seed(123)
+  
+  # Generate PWM models
+  writeLines(sprintf('Computing %s PWMs', length(ks)))
+  pwms = lapply(ks, PWM)
+  
+  
+  # Compute background and foreground distributions
+  writeLines('Computing distributions')
+  dist = lapply(names(pwms), function(n){
+    pwm = pwms[[n]]
+    z = getPosNeg(ks, neg.list, n)
+    fg = mss(z$pos, pwm, na.rm=T)
+    bg = mss(z$neg, pwm, na.rm=T)
+    list(fg=fg, bg=bg)
+  })
+  names(dist) = names(pwms)
+  
+  
+  # Percentile rank functions
+  writeLines('Computing percentile rank functions')
+  perc_fg = lapply(dist, function(n){
+    ecdf(n$fg)
+  })
+  
+  perc_bg = lapply(dist, function(n){
+    ecdf(sample(n$bg, 500))
+  })
+  perc = list(fg=perc_fg, bg=perc_bg)
+  
+  
+  # Compute cutoffs
+  writeLines('Computing cutoffs')
+  sq = seq(0,1,0.01)
+  cutoffs = lapply(dist, function(n){
+    a_fg = quantile(n$fg, sq)
+    a_bg = quantile(n$bg, sq)
+    list(fg=a_fg, bg=a_bg)
+  })
+  
+  
+  writeLines('Combining all data into list ...')
+  data = list(pwms=pwms, 
+              perc=perc, 
+              cutoffs=cutoffs)
+  
+  writeLines('Computing density distributions')
+  folder = ifelse(is.fam, 'density_fam', 'density')
+  dir.create(file.path(folder), recursive=T)
+  dens = sapply(names(dist), function(name){
+    n = dist[[name]]
+    x = paste0('[', js(n$bg), ',', js(n$fg), ']')
+    writeLines(x, file.path(folder, paste0(name, '.json')))
+  })
+  
+  
+  logo_folder = ifelse(is.fam, 'logos_fam', 'logos')
+  dir.create(file.path(folder), recursive=T)
+  for(kin in names(ks)){
+    pdf.out = sprintf('%s/%s.pdf', logo_folder, kin)
+    png.out = sprintf('%s/%s.png', logo_folder, kin)
+    weblogo(ks[[kin]], open = F, file.out = pdf.out, yaxis = 4, errorbars = F, title = kin, annotate = -7:7, color.scheme='chemistry3')
+    system(sprintf('convert -density 200 %s %s', pdf.out, png.out))
+    unlink(pdf.out)
+  }
+  
+  return(data)
+  
+}
+
+mimp_data = processKSR(ks_ref, is.fam=F)
+saveRDS(mimp_data, file='~/Development/mimp/inst/extdata/mimp_data.rds')
+saveRDS(mimp_data, file='mimp_data.rds')
+
+mimp_data_fam = processKSR(ks_fam_ref, is.fam=T)
+saveRDS(mimp_data_fam, file='~/Development/mimp/inst/extdata/mimp_data_fam.rds')
+saveRDS(mimp_data_fam, file='mimp_data_fam.rds')
+
+r_base_logos = '~/Development/mimp/inst/extdata/html/images/logos/'
+r_base_logos_fam = '~/Development/mimp/inst/extdata/html/images/logos_fam/'
+web_base_logos = '~/Development/mimp_webserver/public/images/logos/'
+web_base_logos_fam = '~/Development/mimp_webserver/public/images/logos_fam/'
+
+t = c(r_base_logos, r_base_logos_fam, web_base_logos, web_base_logos_fam)
+for(dd in t) unlink(dd, recursive = T)
+system(sprintf('cp -r logos %s', r_base_logos))
+system(sprintf('cp -r logos %s', web_base_logos))
+
+system(sprintf('cp -r logos_fam %s', r_base_logos_fam))
+system(sprintf('cp -r logos_fam %s', web_base_logos_fam))
+
+
+
+
+ks = readRDS('~/Desktop/MSc project/rewiring/data/new/ksr_refined_90p.rds')
+weblogoBatch(ks, titles = names(ks), file.out = '~/Desktop/kinase_logos_refined.pdf', probability = F)
+ksf = readRDS('~/Desktop/MSc project/rewiring/data/new/ksr_family_refined_90p.rds')
+weblogoBatch(ksf, titles = names(ksf), file.out = '~/Desktop/kinase_family_logos_refined.pdf', probability = F)
+
+writeLines('All done!')

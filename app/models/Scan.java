@@ -24,6 +24,7 @@ public class Scan implements Runnable {
 	public String ps_data;
 	public Integer a_min;
 	public Integer a_max;
+	public String fam_models;
 	public String html;
 	public List<String> mut_error;
 	public List<String> ps_error;
@@ -36,6 +37,7 @@ public class Scan implements Runnable {
 		incl_ps = "no";
 		a_min = 90;
 		a_max = 10;
+		fam_models = "no";
 		mut_error = new ArrayList();
 		ps_error = new ArrayList();
 	}
@@ -122,6 +124,7 @@ public class Scan implements Runnable {
 	        cmd = cmd + "--beta " + a_min + " ";
 	        cmd = cmd + "--alpha " + a_max + " ";
 	        cmd = cmd + "--jobid " + job_id + " ";
+	        if(!fam_models.equals("no")) cmd = cmd + "--fam ";
 	        
 	        StringBuilder shellOutput = new StringBuilder();
 	        Process p = Runtime.getRuntime().exec(cmd);

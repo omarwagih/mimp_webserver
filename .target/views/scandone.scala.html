@@ -55,11 +55,12 @@
 			div.row{
 				margin-bottom:5px;
 			}
-
-			thead tr th:nth-child(7){
+			
+			
+			thead tr th:nth-child(9){
 				display:none;
 			}
-			tbody tr td:nth-child(7){
+			tbody tr td:nth-child(9){
 				display:none;
 			}
 			thead tr th:nth-child(8){
@@ -68,6 +69,13 @@
 			tbody tr td:nth-child(8){
 				display:none;
 			}
+			thead tr th:nth-child(4){
+				display:none;
+			}
+			tbody tr td:nth-child(4){
+				display:none;
+			}
+			
 
 </style>
 	<div id="result-wrap">
@@ -152,7 +160,7 @@
 	
 	</div>
 
-
+	
 
 
 
@@ -288,7 +296,7 @@
 
 				$('#modal-logo').attr('src', pwm_src);
 
-				$.getJSON("/assets/R/generate_data/density/"+pwm+".json",function(data){
+				$.getJSON('/assets/R/generate_data/density@if(job.fam_models == "on"){_fam}/'+pwm+'.json',function(data){
         
 		        $('#chart').empty();
 		        var graph = new Rickshaw.Graph( {
@@ -333,12 +341,28 @@
 		      	});
 
 			});//End click
+			
+			$('#table-body tr').each( function( index, element ){
+			    x = $( this );
+			    dist = x.find('.mut-dist').text();
+				kin = x.find('.seq-logo .name').text();
+				@if(job.fam_models != "no"){
+					folder = 'logos_fam_rect'
+				}else{
+					folder = 'logos_rect';
+				}
+				logoRect = '/assets/images/'+folder+'/'+ kin + '_' + dist + '.png';
+				x.find('.seq-logo img').attr('src', logoRect)
+			});
 
 		}
 
 		$(document).ready(function(){
-
-			updateZoom();
+			
+			//updateZoom();
+			
+			//x = $([0]);
+			
 			
 			// Add update callback, since data table not created here
 			oTable = $('.dataTable').dataTable();
@@ -399,9 +423,14 @@
 			    }
 			});
 
-			fnShowHide(3);
+			//fnShowHide(3);
 
 			update();
+			
+			//t = $($('img.logo')[0]);
+			//t.parents('.seq-logo').css({"background-image":"url(/assets/images/logos_fam//MLK.png)", "background-size":"cover", "background-repeat": "no-repeat"});
+			//t.wrap('<div style="width:100%; height:100%; background-image:url(/assets/images/logos_fam//MLK.png); background-size:cover; background-repeat: no-repeat"><div class="dist1"></div></div>');
+			//t.wrap('<div class="logo-container"> <div class="logo-navi" style="width:100%; height:100%; background-image:url(/assets/images/logos_fam//MLK.png); background-size:cover; background-repeat: no-repeat"></div> <div class="logo-infoi"></div> </div>')
 		});
 		
 	</script>
