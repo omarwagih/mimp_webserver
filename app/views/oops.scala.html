@@ -1,0 +1,41 @@
+@(err: String)
+
+@main("Oops", "MIMP", "") {
+	<script>
+	function goBack() {
+	    window.history.back()
+	}
+	</script>
+	
+	<center>
+	<h1 style="font-size: 100px; font-weight:bold; color:#D90000">Oops!</h1>
+	
+	<h2 style="font-weight:300">
+	@if(err == "jobNotFound"){
+		Sorry, the job you requested cannot be found. 
+	}
+	
+	@if(err == "badRequest"){
+		Sorry, the page you requested cannot be found.
+	}
+	
+	@if(err == "handlerNotFound"){
+		Sorry, the requested page does not exist. 
+	}
+	
+	@if(err == "error"){
+		An unexpected error occurred. Please <a href="@routes.Application.about">contact the developers</a> if this issue persists.
+	}
+	
+	@if(err == "memory"){
+		Your data exceeds the maximum limit of 20MB. <br>
+		For more flexible usage of MIMP, please consider downloading and running the local version on your own machine from <a href="@routes.Application.download">here</a>.
+	}
+	<br>
+	<br>
+	
+	<button onclick="goBack()" type="button" class="btn btn-primary">Go back</button>
+	</h2>
+	
+	</center>
+}

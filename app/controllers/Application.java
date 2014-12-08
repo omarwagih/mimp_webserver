@@ -18,10 +18,9 @@ import models.Scan;
 import play.*;
 import play.mvc.*;
 import play.data.Form;
-
 import play.libs.Json;
-
 import views.html.*;
+import views.html.defaultpages.error;
 
 public class Application extends Controller {
 	final static Form<Scan> myForm = Form.form(Scan.class);
@@ -64,8 +63,9 @@ public class Application extends Controller {
     }
     
     public static Result show_job(String jobid) throws IOException{
+    	
     	Scan job = getJobFromJsonFile(jobid);
-    	if(job == null) return TODO;
+    	if(job == null) return badRequest(oops.render("jobNotFound"));
     	
     	String no_data = jobPath(jobid) + "no_data";
     	if(new File(no_data).exists()){
@@ -86,37 +86,57 @@ public class Application extends Controller {
         	return badRequest(scan.render(filledForm));
         }
 
-    	job.html = Help.readFile(Application.jobPath(job.job_id) + "html.txt");
+        try{
+        	job.html = Help.readFile(Application.jobPath(job.job_id) + "html.txt");
+    	}catch(Exception e){
+    		return badRequest(oops.render("error"));
+    	}
+    	
     	return ok(scandone.render(job));
     }
 
     public static Result submit() throws IOException{
-    	// Get form
-        Form<Scan> filledForm = myForm.bindFromRequest();
-        Scan job = filledForm.get();
-        
-        Logger.info("JOB HAS ID = "+ job.job_id);
-        Logger.info("MODEL DATA = "+ job.model_data);
-    	//job.job_id = 
-        String jobid = UUID.randomUUID().toString();
-        if(job.job_id != ""){
-        	jobid = job.job_id;
-        	 // Delete previous json file
-        	 String path = jobPath(job.job_id) +job.job_id+".json";
-        	 boolean delsuc = new File(path).delete();
+    	try{
+    		// Get form
+            Form<Scan> filledForm = myForm.bindFromRequest();
+            Scan job = filledForm.get();
+            
+            if(job.fasta_data.isEmpty() | job.mut_data.isEmpty())
+            	return badRequest(oops.render("memory"));
+            
+            if(job.ps_data.isEmpty() && job.incl_ps.equals("yes"))
+            	return badRequest(oops.render("memory"));
+            
+            
+            Help.writeFile(job.fasta_data, "/Users/omarwagih/Desktop/play_fa.txt");
+            Logger.info("FASTA = "+ job.fasta_data);
+            
+            Logger.info("JOB HAS ID = "+ job.job_id);
+            Logger.info("MODEL DATA = "+ job.model_data);
+        	//job.job_id = 
+            String jobid = UUID.randomUUID().toString();
+            if(job.job_id != ""){
+            	jobid = job.job_id;
+            	 // Delete previous json file
+            	 String path = jobPath(job.job_id) +job.job_id+".json";
+            	 boolean delsuc = new File(path).delete();
 
-             // Delete no_data file if it exists
-             String no_data = jobPath(jobid) + "no_data";
-             boolean delno = new File(no_data).delete();
-        }else{
-        	job.job_id = jobid;
-        }
-        
-        
-        Logger.info(job.toString());
+                 // Delete no_data file if it exists
+                 String no_data = jobPath(jobid) + "no_data";
+                 boolean delno = new File(no_data).delete();
+            }else{
+            	job.job_id = jobid;
+            }
 
-        new Thread(job). start( );
-        return redirect("/wait/"+jobid);
+            new Thread(job). start( );
+            return redirect("/wait/"+jobid);
+            
+    	}catch(Exception e){
+    		return badRequest(oops.render("error"));
+    	}
+        // Logger.info(job.toString());
+        
+
     	
     }
     
@@ -148,3 +168,4 @@ public class Application extends Controller {
     	return "public/jobs/" +jobid + "/";
     }
 }
+

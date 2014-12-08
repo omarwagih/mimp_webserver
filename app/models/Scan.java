@@ -68,14 +68,21 @@ public class Scan implements Runnable {
         (new File(jobdir)).mkdirs();
         
 		try {
+			
 			Map<String, String> fa = Help.readFasta(fasta_data);
 			for(String line : mut_data.trim().split("\n")){
+				if(line.trim().isEmpty()) continue;
+				//System.out.println("LINE:" + line);
+				
 				String[] sp = line.split("\\s+");
 				String gene = sp[0];
+				//System.out.println("\tGENE:" + gene);
 				String mut = sp[1];
+				//System.out.println("\tMUT:" + mut);
 				String seq = fa.get(gene);
 				
 				int mut_pos = Integer.parseInt(mut.substring(1, mut.length()-1));
+				//System.out.println("\tmut_pos:" + Integer.toString(mut_pos));
 				
 				if(seq == null) continue;
 				if(mut_pos > seq.length()) continue;

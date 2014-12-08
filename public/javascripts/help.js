@@ -66,6 +66,7 @@ $('#submitForm').click(function(event){
         valid = false;
     }
     if(!valid) return;
+    
     $('form').submit();
 });
 
