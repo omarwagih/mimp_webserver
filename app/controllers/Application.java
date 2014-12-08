@@ -4,7 +4,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -89,7 +92,13 @@ public class Application extends Controller {
         try{
         	job.html = Help.readFile(Application.jobPath(job.job_id) + "html.txt");
     	}catch(Exception e){
-    		Logger.error(e.getStackTrace().toString());
+    		Logger.info("XXXXXX");
+    		Writer writer = new StringWriter();
+    		PrintWriter printWriter = new PrintWriter(writer);
+    		e.printStackTrace(printWriter);
+    		String s = writer.toString();
+    		
+    		Logger.error(s);
     		return badRequest(oops.render("error"));
     	}
     	
@@ -133,7 +142,14 @@ public class Application extends Controller {
             return redirect("/wait/"+jobid);
             
     	}catch(Exception e){
-    		Logger.error(e.getStackTrace().toString());
+    		Logger.info("YYYYYY");
+    		Writer writer = new StringWriter();
+    		PrintWriter printWriter = new PrintWriter(writer);
+    		e.printStackTrace(printWriter);
+    		String s = writer.toString();
+    		
+    		Logger.error(s);
+    		
     		return badRequest(oops.render("error"));
     	}
         // Logger.info(job.toString());
