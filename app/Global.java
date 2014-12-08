@@ -16,6 +16,7 @@ public class Global extends GlobalSettings {
     }
 	
 	 public Promise<SimpleResult> onBadRequest(RequestHeader request, String error) {
+		 Logger.error(error);
         return Promise.<SimpleResult>pure(badRequest(
         		views.html.oops.render("badRequest")
         ));
@@ -23,12 +24,14 @@ public class Global extends GlobalSettings {
 	 
 	 
 	 public Promise<SimpleResult> onError(RequestHeader request, String error) {
+		 Logger.error(error);
 	        return Promise.<SimpleResult>pure(badRequest(
 	        		views.html.oops.render("error")
 	        ));
 		 }
 	 
 	 public Promise<SimpleResult> onExecutionException(RequestHeader request, String error) {
+		 	Logger.error(error);
 	        return Promise.<SimpleResult>pure(badRequest(
 	        		views.html.oops.render("error")
 	        ));

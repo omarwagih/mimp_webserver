@@ -89,6 +89,7 @@ public class Application extends Controller {
         try{
         	job.html = Help.readFile(Application.jobPath(job.job_id) + "html.txt");
     	}catch(Exception e){
+    		Logger.error(e.getStackTrace().toString());
     		return badRequest(oops.render("error"));
     	}
     	
@@ -132,6 +133,7 @@ public class Application extends Controller {
             return redirect("/wait/"+jobid);
             
     	}catch(Exception e){
+    		Logger.error(e.getStackTrace().toString());
     		return badRequest(oops.render("error"));
     	}
         // Logger.info(job.toString());
