@@ -118,7 +118,7 @@ public class Application extends Controller {
             	return badRequest(oops.render("memory"));
             
             
-            Help.writeFile(job.fasta_data, "/Users/omarwagih/Desktop/play_fa.txt");
+            //Help.writeFile(job.fasta_data, "/Users/omarwagih/Desktop/play_fa.txt");
             Logger.info("FASTA = "+ job.fasta_data);
             
             Logger.info("JOB HAS ID = "+ job.job_id);
