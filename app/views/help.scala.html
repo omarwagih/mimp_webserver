@@ -3,7 +3,7 @@
 
   <h4>What is MIMP?</h4>
   <div id="1">
-    <p>Mutations IMpact on Phsophorylation (MIMP) is a web service that predicts if a mutation within a phosphorylation site will alter phosphorylation. MIMP works by constructing specificity models for kinases, which are then used to score phosphosites containing a mutation before and after the mutation to predict the impact it may have on phosphorylation. There are three types of events that can occur</p>
+    <p>Mutations IMpact on Phosphorylation (MIMP) is a web service that predicts if a mutation within a phosphorylation site will alter phosphorylation. MIMP works by constructing specificity models for kinases, which are then used to score phosphosites containing a mutation before and after the mutation to predict the impact it may have on phosphorylation. There are three types of events that can occur</p>
     <ul>
     <li>Loss-of-binding: the mutation disrupts specificity for a kinase</li>
     <li>Gain-of-binding: the mutation creates a new motif which causes phosphorylation by a new kinase</li>
@@ -56,6 +56,21 @@ seq1 9</pre>
 
   <hr>
   
+  <h4>What are the different kinase specificity models?</h4>
+  <p>There are three different sets of specificity models. The chosen set is used in the scanning of phosphorylation rewiring in MIMP. </p>
+  <ol>
+	<li><b>Individual kinase specificity models</b> these are specificity models constructed using experimentally verified kinase-peptide phosphorylation on an individual kinase level. Data is obtained from public databases such as PhosphoSitePlus, PhosphoELM and HPRD. Since these models are constructed using experimental data on the peptide level, they are considered high confidence.</li>
+	<li><b>Kinase family specificity models</b> This is similar to 1. Since kinase families typically have similar specificities, these models are also constructed using experimentally verified kinase-peptide phosphorylation, but are grouped based on the kinase families/subfamilies. This can have certain advantages and disadvantages. For example, there are cases where members of kinase families show a moderate and sometimes large difference from that of the collapsed family model. However, using kinase family models can avoid redundant (gain or loss of phosphorylation) prediction of family members that have similar specificities.</li>
+	<li><b>Predicted individual kinase specificity models</b> these are specificity models that are predicted from kinase-substrate interactions, on the protein level and not the peptide. The kinase-substrate relationships (KSRs) are derived using protein microarrays as described in <a href="http://www.ncbi.nlm.nih.gov/pubmed/23549483" target="_blank">Newman <em>et al.</em> (2013)</a>. The KSRs are then combined with experimentally identified phosphosites to predict the specificity models by through an iterative refinement process (termed M3) similar to that described in the MIMP paper. For more information on the M3 algorithm please see the <a href="http://www.ncbi.nlm.nih.gov/pubmed/23549483" target="_blank">Newman <em>et al.</em> (2013)</a> paper.
+	<br>
+	<p class="warning-link">Please be extremely cautious when using these models. While KSRs are identified <em>in vitro</em> and some models may be correct, it is likely that others are not. These models are thus considered low-confidence. </p>
+	
+	</li>
+  </ol>
+	
+
+  <hr>
+  
   <h4>What do the scores mean?</h4>
   <p>The scores quantitatively represent how well a phosphosite is likely to be phosphorylated by a kinase. Scores range from 0-1, where 0 represents no predicted phosphorylation and 1 represents perfect phosphorylation. 
   <br>If a peptide has a score of -1, this means it cannot be assigned a score because the central residue has been mutated to or from a non STY residue and a kinase will never phosphorylate it. For example, <code>HAWNKDR<u>T</u>QIAICPN</code> will have a score between 0-1, while <code>HAWNKDR<u>A</u>QIAICPN</code> will have a score of -1.</p>
@@ -97,7 +112,7 @@ seq1 9</pre>
   <hr>
   
   <h4>I can't find my kinase of interest, what should I do?</h4>
-  <p>MIMP uses up-to-date data from <a target="_blank" href="http://phospho.elm.eu.org/">PhosphoELM</a>, <a target="_blank" href="http://www.phosphosite.org/">PhosphoSite Plus</a>, <a target="_blank" href="http://www.hprd.org/">HPRD</a> and <a target="_blank" href="http://phosphonetworks.org/">PhosphoNetwork</a>. If your kinase is not available it is likely that there is insufficient kinase-substrate data available to construct a specificty model. If you are able to provide sufficient kinase-substrate data for your kinase, please <a target="_blank" href="#">contact us</a>.</p>
+  <p>MIMP uses up-to-date data from <a target="_blank" href="http://phospho.elm.eu.org/">PhosphoELM</a>, <a target="_blank" href="http://www.phosphosite.org/">PhosphoSite Plus</a>, <a target="_blank" href="http://www.hprd.org/">HPRD</a> and <a target="_blank" href="http://phosphonetworks.org/">PhosphoNetwork</a>. If your kinase is not available it is likely that there is insufficient kinase-substrate data available to construct a specificity model. If you are able to provide sufficient kinase-substrate data for your kinase, please <a target="_blank" href="#">contact us</a>.</p>
 
   <hr>
   

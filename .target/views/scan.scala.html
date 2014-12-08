@@ -2,7 +2,7 @@
 @import helper._
 @implicitField = @{ FieldConstructor(bootstrapInput.f) }
 
-@main("Scan", "Scan", "Scan sequences for gain and loss of signaling") {
+@main("Scan", "Scan", "Scan sequences for gain and loss of phosphorylation") {
 	<script>
 		  var updateInclPs = function(){
 	        ps = $('#ps_data').parents('.form-group');
@@ -108,14 +108,23 @@
                     	<input id="@id" name="@id" class="form-control" type="range" min="1" max="100" value="@value" step="1" onchange="showValue(this.value, 'a_max_range')">
                   }
                   
-                  @helper.input(myForm("fam_models"), '_label -> "Specificity models", '_type -> "checkbox", '_tooltip -> "By default, individual kinase specificity models used to scan for rewiring events. If you would like to use specificity models of the kinase families, check this box") { (id, name, value, args) =>
+                  <!-- 
+                  @@helper.input(myForm("fam_models"), '_label -> "Specificity models", '_type -> "checkbox", '_tooltip -> "By default, individual kinase specificity models used to scan for rewiring events. If you would like to use specificity models of the kinase families, check this box") { (id, name, value, args) =>
                     	<div class="checkbox">
                     	<label>
-                    		<input id="@id" name="@id" type="checkbox"  @if(myForm("fam_models").value == "on"){checked}>
+                    		<input id="@@id" name="@@id" type="checkbox"  >
                     		Use kinase family models
                
                     	</label>
                     	</div>
+                  } -->
+                  
+                   @helper.input(myForm("model_data"), '_label -> "Specificity model data", '_type -> "checkbox", '_tooltip -> "The specificity models used in the analysis. By default, individual experimental kinase specificity models are used to scan for rewiring events. Other specificity models e.g. experimental kinase family models, or predicted models (low confidence) can also be selected. For more details on the different selections, see the help section.") { (id, name, value, args) =>
+                    	<select class="form-control" id="@id" name="@id" style="width:50%">
+						  <option @if(myForm("model_data").value == "hconf"){selected} value="hconf">Individual kinase models (124)</option>
+						  <option @if(myForm("model_data").value == "hconf-fam"){selected} value="hconf-fam">Kinase family models (58)</option>
+						  <option @if(myForm("model_data").value == "lconf"){selected} value="lconf">Predicted individual kinase models (294)</option>
+						</select>
                   }
                   <hr>
                   <div class="form-group">

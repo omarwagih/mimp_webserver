@@ -13,10 +13,16 @@
     <script src="@routes.Assets.at("javascripts/jquery.csvToTable.js")"></script>
     <script src="@routes.Assets.at("javascripts/bootstrap-select.min.js")"></script>
     <link rel="stylesheet" href="@routes.Assets.at("stylesheets/bootstrap-select.min.css")">
-
+    
+    <link rel="stylesheet" href="@routes.Assets.at("javascripts/intensezoom/intense.css")">
+    <link rel="stylesheet" href="@routes.Assets.at("stylesheets/csshake.min.css")">
+    <!-- 
+    <script src="@routes.Assets.at("javascripts/introjs/intro.js")"></script>
+    <link rel="stylesheet" href="@routes.Assets.at("javascripts/introjs/introjs.css")">
+	-->
     <script>
       $( document ).ready(function() {
-         $('select').selectpicker();
+         $('.selectpicker').selectpicker();
       });
     </script>
     
@@ -107,7 +113,7 @@ background-color: #18bc9c;
             <span class="icon-bar"></span>
           </button>
           <a class="navbar-brand" href="@routes.Application.index">
-            <img src="@routes.Assets.at("images/mimp_logo.png")" style="height:60px" alt="MIMP logo"/>
+            <img src="@routes.Assets.at("images/mimp_logo.svg")" style="height:60px" alt="MIMP logo" class=""/>
           </a>
         </div>
         <div class="navbar-collapse collapse" style="padding-top:20px">
@@ -147,7 +153,7 @@ background-color: #18bc9c;
           
           <ul class="list-unstyled">
             <li><a href="@routes.Application.download">Download</a></li>
-            <li><a target="_blank" href="https://github.com/omarwagih/mimp/issues">Issues</a></li>
+            <li><a target="_blank" href="https://github.com/omarwagih/rmimp/issues">Issues</a></li>
             <li><a href="@routes.Application.about">Contact</a></li>
           </ul>
           <p>&copy; 2014 <a href="http://baderlab.com" target="_blank">Bader Lab</a> University of Toronto </p>
@@ -163,4 +169,5 @@ background-color: #18bc9c;
     <script src="@routes.Assets.at("javascripts/bootstrap.min.js")"></script>
     <script src="@routes.Assets.at("javascripts/bootswatch.js")"></script>
   
+    <script src="@routes.Assets.at("javascripts/intensezoom/intense.js")"></script>
 </body></html>

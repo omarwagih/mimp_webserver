@@ -32,7 +32,8 @@
 			}
 			.wt-score, .mt-score{
 				color: #18bc9c;
-				cursor: pointer; cursor: hand;
+				/* cursor: pointer; cursor: hand; */
+				
 			}
 
 			#loss-label, #gain-label{
@@ -74,6 +75,20 @@
 			}
 			tbody tr td:nth-child(4){
 				display:none;
+			}
+			
+			.logo{
+				/*height:40%;*/
+				width:100%;
+			
+			  -webkit-background-size: cover !important;
+			     -moz-background-size: cover !important;
+			       -o-background-size: cover !important;
+			          background-size: cover !important;
+			}
+			
+			#modal-logo{
+				width:90%;
 			}
 			
 
@@ -214,7 +229,8 @@
 			
 	        <br>
 	        <center>
-	        <img src="" id="modal-logo" alt="Modal sequence logo" style="width:75%"/>
+	        <!-- <img src="" id="modal-logo" alt="Modal sequence logo" />  -->
+	        <div id="modal-logo"></div>
 	        </center>
 	        
 
@@ -243,24 +259,26 @@
 		}
 
 		var updateZoom = function(x){
-				console.log('Zoom updated');
-				r = $('img.logo');
-				
-				r.wrap('<span id="logo-wrap" style="display:inline-block;"></span>')
-					.css('display', 'block')
-					.parent()
-					.zoom({
-					    onZoomIn: function(){
-						    $(this).siblings().css('visibility', 'hidden');
-					    },
-					    onZoomOut: function(){
-						    $(this).siblings().css('visibility', 'visible');
-					    }
-					});
-				
-			}
+			$('.intense-figure').remove();
+			$('.logo').addClass('zoom');
+			var elements = document.querySelectorAll( '.logo' );
+			Intense( elements );
+
+	        document.body.style.overflow = '';
+		}
+		
+		var removeIntense = function(x){
+			/* var x = document.querySelectorAll( '.intense-figure' );
+			//Intense( elements, true );
+			x.onload = null;
+			
+	        document.body.style.overflow = '';
+			 */
+		}
 
 		update = function(x){
+			updateZoom();
+			$( ".wt-score, .mt-score" ).addClass('zoom');
 			$( ".wt-score, .mt-score" ).click(function(){
 				row = $(this).parents('tr');
 				gene = row.find('.gene-name').text();
@@ -273,7 +291,8 @@
 				mt_score = +row.find('.mt-score').text();
 
 				pwm = row.find('.seq-logo .name').text();
-				pwm_src = row.find('.seq-logo .logo').attr('src');
+				pwm_img = row.find('.seq-logo .logo');
+				pwm_src = pwm_img.attr('src');
 
 				wt_dist = wt_score > mt_score ? "FG" : "BG";
 				mt_dist = mt_score > wt_score ? "FG" : "BG";
@@ -293,10 +312,15 @@
 				$('#modal-score-mt').html(mt_score_p);
 				$('#modal-log-ratio').text(log);
 				$('#modal-effect').html(eff);
-
-				$('#modal-logo').attr('src', pwm_src);
-
-				$.getJSON('/assets/R/generate_data/density@if(job.fam_models == "on"){_fam}/'+pwm+'.json',function(data){
+				
+				console.log(pwm_img)
+				//$('#modal-logo').attr('src', pwm_src);
+				//$('#modal-logo').attr('style', pwm_img.attr('style') );
+				//$('#modal-logo').attr('class', pwm_img.attr('class') );
+				$('#modal-logo').empty();
+				pwm_img.clone().removeClass('zoom').appendTo('#modal-logo');
+				
+				$.getJSON('/assets/R/generate_data/density@(job.modelDataName())/'+pwm+'.json',function(data){
         
 		        $('#chart').empty();
 		        var graph = new Rickshaw.Graph( {
@@ -342,24 +366,11 @@
 
 			});//End click
 			
-			$('#table-body tr').each( function( index, element ){
-			    x = $( this );
-			    dist = x.find('.mut-dist').text();
-				kin = x.find('.seq-logo .name').text();
-				@if(job.fam_models != "no"){
-					folder = 'logos_fam_rect'
-				}else{
-					folder = 'logos_rect';
-				}
-				logoRect = '/assets/images/'+folder+'/'+ kin + '_' + dist + '.png';
-				x.find('.seq-logo img').attr('src', logoRect)
-			});
 
 		}
 
 		$(document).ready(function(){
 			
-			//updateZoom();
 			
 			//x = $([0]);
 			
@@ -369,16 +380,24 @@
 			oTable.fnSettings().aoDrawCallback.push( {
 			    "fn": function( oSettings ) { console.log( 'DataTables has redrawn the table' ); update(); },
 			    "sName": "user"
-			} );
+			} ); 
+			
+			oTable.fnSettings().aoPreDrawCallback.push( {
+			    "fn": function( oSettings ) { console.log( 'Removing intense zoom listener' ); removeIntense(); },
+			    "sName": "user"
+			} ); 
+			
 			
 			if($('.dataTable').length == 0){
 				$('#example').dataTable( {
 					"sDom": "<'row'<'.col-md-6'l><'.col-md-6'f>r>t<'row'<'.col-md-6'i><'.col-md-6'p>>",
 					"sPaginationType": "bootstrap",
-					"oLanguage": {"sLengthMenu": "_MENU_ records per page"},
-					"fnDrawCallback": function( oSettings ) { console.log( 'DataTables has redrawn the table' ); update();  }
+					"oLanguage": {"sLengthMenu": "_MENU_ records per page"}//,
+					/* "fnDrawCallback": function( oSettings ) { console.log( 'DataTables has redrawn the table' ); update();  },
+					"fnPreDrawCallback": function( oSettings ) { console.log( 'Predraw callback' ); alert('x'); } */
 				} );
 			}
+			
 			if($('#n_loss').length > 0) $('#loss-badge').text($('#n_loss').text());
 			if($('#n_gain').length > 0) $('#gain-badge').text($('#n_gain').text());
 			if($('#n_mut').length > 0) $('#mut-badge').text($('#n_mut').text());

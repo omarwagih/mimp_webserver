@@ -14,10 +14,24 @@ var addError = function(selector, message){
     $(selector).siblings('.help-block').html(message);
 }
 
+var addWarning = function(selector, message){
+    $(selector).parents('.form-group').addClass('has-warning');
+    $(selector).siblings('.help-block').html(message);
+}
+
 var removeError = function(selector){
 	$(selector).parents('.form-group').find('.help-block').empty();
-    $(selector).parents('.form-group').removeClass('has-error');
+    $(selector).parents('.form-group').removeClass('has-error').removeClass('has-warning');;
 }
+
+$('#model_data').change(function(){
+	v = $( "#model_data option:selected" ).val();
+	if(v == "lconf"){
+		addWarning("#model_data", "Warning: predicted models are purely speculative and should be used with <b>EXTREME CAUTION</b> as they are based on the kinase-substrate relationships and not kinase-peptide. For more information on how these specifcity models are predicted, please read the <a class='warning-link' href='#' target='_blank'>help section</a>.")
+	}else{
+		removeError("#model_data");
+	}
+});
 
 $('#submitForm').click(function(event){
     event.preventDefault();

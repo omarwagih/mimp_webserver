@@ -1,7 +1,9 @@
-ks = readRDS('~/Desktop/MSc project/rewiring/data/new/ksr_family_refined_90p.rds')
+require(RWebLogo)
+source('~/Development/phd/reconstruct_kinase/init.R')
+ks = readRDS('~/Desktop/MSc project/rewiring/data/new/ksr_newman.rds')
 setwd('~/Desktop/')
 
-logo_folder = '~/Desktop/logos_fam_rect/'
+logo_folder = '~/Desktop/logos_newman_rect/'
 
 for(kin in names(ks)){
   pdf.out = sprintf('%s/%s.pdf', logo_folder, kin)
@@ -29,7 +31,7 @@ for(kin in names(ks)){
     
     bit = (y1 - y0)/4.2
     z = shannon[i]
-    #if(z < 3.6) z = z - (0.05 * z)
+    if(z > 4) z = 4
     z = bit * z
     y0. = ceiling(  y1 - z )
     

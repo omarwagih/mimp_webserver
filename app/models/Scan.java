@@ -24,7 +24,7 @@ public class Scan implements Runnable {
 	public String ps_data;
 	public Integer a_min;
 	public Integer a_max;
-	public String fam_models;
+	public String model_data;
 	public String html;
 	public List<String> mut_error;
 	public List<String> ps_error;
@@ -37,7 +37,7 @@ public class Scan implements Runnable {
 		incl_ps = "no";
 		a_min = 90;
 		a_max = 10;
-		fam_models = "no";
+		model_data = "hconf";
 		mut_error = new ArrayList();
 		ps_error = new ArrayList();
 	}
@@ -50,6 +50,12 @@ public class Scan implements Runnable {
 				"ps_data = " + ps_data + "\n"+
 				"a_min = " + a_min + "\n"+
 				"a_max = " + a_max + "\n";
+	}
+	
+	public String modelDataName(){
+		if(model_data.equals("hconf-fam")) return("_fam");
+		if(model_data.equals("lconf")) return("_newman");
+		return("");
 	}
 
 	@Override
@@ -124,7 +130,7 @@ public class Scan implements Runnable {
 	        cmd = cmd + "--beta " + a_min + " ";
 	        cmd = cmd + "--alpha " + a_max + " ";
 	        cmd = cmd + "--jobid " + job_id + " ";
-	        if(!fam_models.equals("no")) cmd = cmd + "--fam ";
+	        cmd = cmd + "--mdata " + model_data + " ";
 	        
 	        StringBuilder shellOutput = new StringBuilder();
 	        Process p = Runtime.getRuntime().exec(cmd);
