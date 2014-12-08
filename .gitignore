@@ -34,6 +34,7 @@ dist
 =======
 test-result
 server.pid
+.target
 *.iml
 *.eml
 >>>>>>> 8f797ddb733312f5cb9669f799a240c77360f655
