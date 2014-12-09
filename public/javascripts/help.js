@@ -27,7 +27,7 @@ var removeError = function(selector){
 $('#model_data').change(function(){
 	v = $( "#model_data option:selected" ).val();
 	if(v == "lconf"){
-		addWarning("#model_data", "Predicted models are purely speculative and should be used with caution. They are based on the kinase-substrate relationships and not kinase-peptide. We strongly urge users who use this dataset to manually verify that the logos appear valid before proceeding with downstream analyses. For more information on how these specifcity models are predicted, please read the <a class='warning-link' href='@routes.Application.help'>help section</a>.")
+		addWarning("#model_data", "Predicted models are purely speculative and should be used with caution. They are based on the kinase-substrate relationships and not kinase-peptide. We strongly urge users who use this dataset to manually verify that the logos appear valid before proceeding with downstream analyses. For more information on how these specifcity models are predicted, please read the <a class='warning-link' href='../help'>help section</a>.")
 	}else{
 		removeError("#model_data");
 	}
