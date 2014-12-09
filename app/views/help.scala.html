@@ -5,8 +5,8 @@
   <div id="1">
     <p>Mutations IMpact on Phosphorylation (MIMP) is a web service that predicts if a mutation within a phosphorylation site will alter phosphorylation. MIMP works by constructing specificity models for kinases, which are then used to score phosphosites containing a mutation before and after the mutation to predict the impact it may have on phosphorylation. There are three types of events that can occur</p>
     <ul>
-    <li>Loss-of-binding: the mutation disrupts specificity for a kinase</li>
-    <li>Gain-of-binding: the mutation creates a new motif which causes phosphorylation by a new kinase</li>
+    <li>Loss-of-phosphorylation: the mutation disrupts specificity for a kinase</li>
+    <li>Gain-of-phosphorylation: the mutation creates a new motif which causes phosphorylation by a new kinase</li>
     </ul>
 
     <img src="@routes.Assets.at("images/fig1.png")" style="height:400px">
@@ -45,7 +45,7 @@ seq1 9</pre>
   <hr>
   
   <h4>What are the &alpha; and &beta; cutoffs?</h4>
-  <p>Once a score is obtained for both the wildtype and mutant phosphosite, MIMP will use kinase specificity models to score phosphosites that belong to a kinase (positive) and that do not (negative). This results in two distributions being generated: foreground and background. &alpha; and &beta; represent percentiles of the foreground and background distributions, respectively. In order for a loss-of-signalling event to occur, the score of the wildtype phosphosite must be greater than the score at the &alpha; percentile and the score of the mutant phosphosite must be less than the score at the &beta; percentile. This is vice versa for gain-of-signalling.
+  <p>Once a score is obtained for both the wild-type and mutant phosphosite, MIMP will use kinase specificity models to score phosphosites that belong to a kinase (positive) and that do not (negative). This results in two distributions being generated: foreground and background. &alpha; and &beta; represent percentiles of the foreground and background distributions, respectively. In order for a loss-of-signalling event to occur, the score of the wild-type phosphosite must be greater than the score at the &alpha; percentile and the score of the mutant phosphosite must be less than the score at the &beta; percentile. This is vice versa for gain-of-phosphorylation.
   </p>
   <p>
 
@@ -63,7 +63,7 @@ seq1 9</pre>
 	<li><b>Kinase family specificity models</b> This is similar to 1. Since kinase families typically have similar specificities, these models are also constructed using experimentally verified kinase-peptide phosphorylation, but are grouped based on the kinase families/subfamilies. This can have certain advantages and disadvantages. For example, there are cases where members of kinase families show a moderate and sometimes large difference from that of the collapsed family model. However, using kinase family models can avoid redundant (gain or loss of phosphorylation) prediction of family members that have similar specificities.</li>
 	<li><b>Predicted individual kinase specificity models</b> these are specificity models that are predicted from kinase-substrate interactions, on the protein level and not the peptide. The kinase-substrate relationships (KSRs) are derived using protein microarrays as described in <a href="http://www.ncbi.nlm.nih.gov/pubmed/23549483" target="_blank">Newman <em>et al.</em> (2013)</a>. The KSRs are then combined with experimentally identified phosphosites to predict the specificity models by through an iterative refinement process (termed M3) similar to that described in the MIMP paper. For more information on the M3 algorithm please see the <a href="http://www.ncbi.nlm.nih.gov/pubmed/23549483" target="_blank">Newman <em>et al.</em> (2013)</a> paper.
 	<br>
-	<p class="warning-link">Please be extremely cautious when using these models. While KSRs are identified <em>in vitro</em> and some models may be correct, it is likely that others are not. These models are thus considered low-confidence. </p>
+	<p class="warning-link">Please be extremely cautious when using these models. While KSRs are identified <em>in vitro</em> and some models may be correct, it is likely that others are not. These models are thus considered low-confidence and we strongly urge users who use this dataset to manually verify that the logos appear valid before proceeding with downstream analyses. </p>
 	
 	</li>
   </ol>
@@ -78,26 +78,13 @@ seq1 9</pre>
   <hr>
   
   <h4>What does the log ratio mean?</h4>
-  <p>The log ratio measures how distant the wildtype score is from the mutant, which we use as a measure of how confident we are of an event occurring. A high positive log ratio represents a high confidence gain-of-signaling event. A high negative log ratio represents a high confidence loss-of-signaling event. We consider the following confidence intervals for the absolute value of the log ratio:</p>
+  <p>The log ratio measures how distant the wild-type score is from the mutant, which we use as a measure of how confident we are of an event occurring. A high positive log ratio represents a high confidence gain-of-phosphorylation event. A high negative log ratio represents a high confidence loss-of-phosphorylation event. We consider the following confidence intervals for the absolute value of the log ratio:</p>
   <ul>
   <li>Low confidence: 0-1</li>
   <li>Medium confidence 1-2</li>
   <li>High confidence: 2 or greater</li>
   </ul>
   <p><em>Note:</em> If the log ratio has a value of <code>-</code>, this means a log ratio cannot be assigned due to the fact that one of the scores has a value of -1. You can assume this log ratio is of high confidence <em>i.e.</em> approaches infinity (for gains) or -infinity (for losses)</p>
-
-
-  <hr>
-  
-  <h4>Useful tips</h4>
-  <p>There are many several features you may find useful in the results page:</p>
-  <ul>
-  	<li>Hover over the sequence logos to zoom in</li>
-  	<li>Click on the header of a column to sort</li>
-  	<li>Click on the score for a visual representation of where the scores and thresholds fall on the distributions</li>
-  	<li>Click loss or gain buttons to filter the type of event</li>
-  	<li>Type any keyword (e.g. protein name) in the "Search rows" box to filter the results</li>
-  </ul>
 
   <hr>
   

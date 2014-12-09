@@ -81,6 +81,8 @@ names(z) = c(sprintf('%s negative background psites', names(z)))
 write.ksr(z, 'negative_psites.fasta')
 
 
+stop('x')
+# ADD EXCEPTIONS
 
 write.table(sc.data, file = 'tcga_rewiring_events.tab', quote = F, sep = '\t', row.names=F, col.names=T)
 write.table(ps.data, file = 'phosphorylation_data.tab', quote = F, sep = '\t', row.names=F, col.names=T)
