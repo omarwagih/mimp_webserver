@@ -40,6 +40,18 @@ ks_ref = ks_ref[keep]
 keep = rownames(aucs_fam)[aucs_fam$fam.bg >= auc.cutoff]
 ks_fam_ref = ks_fam_ref[keep]
 
+
+# REMOVE EXCEPTION!
+exception = c('---MNGDSRAAVVTS')
+ks = lapply(ks, setdiff, exception)
+ks_ref = lapply(ks_ref, setdiff, exception)
+ks_newman = lapply(ks_newman, setdiff, exception)
+
+ks_fam = lapply(ks_fam, setdiff, exception)
+ks_fam_ref = lapply(ks_fam_ref, setdiff, exception)
+
+ps.data = ps.data[!ps.data$flank %in% exception,]
+
 #-----------------------------------------------------
 
 setwd('~/Development/mimp_webserver/public/R/generate_data/')
@@ -81,13 +93,11 @@ names(z) = c(sprintf('%s negative background psites', names(z)))
 write.ksr(z, 'negative_psites.fasta')
 
 
-stop('x')
-# ADD EXCEPTIONS
-
 write.table(sc.data, file = 'tcga_rewiring_events.tab', quote = F, sep = '\t', row.names=F, col.names=T)
 write.table(ps.data, file = 'phosphorylation_data.tab', quote = F, sep = '\t', row.names=F, col.names=T)
 write.table(mut.data[,c('gene', 'gene_acc', 'cancer_type', 'sample_id', 'wt_residue', 'mut_residue', 'position')], 
             file = 'mutation_data.tab', quote = F, sep = '\t', row.names=F, col.names=T)
+
 
 # Density distributions in json format for webserver
 js <- function(z){

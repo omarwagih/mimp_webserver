@@ -70,6 +70,10 @@ public class Application extends Controller {
     	Scan job = getJobFromJsonFile(jobid);
     	if(job == null) return badRequest(oops.render("jobNotFound"));
     	
+    	if(job.has_error){
+        	return badRequest(oops.render("error"));
+        }
+    	
     	String no_data = jobPath(jobid) + "no_data";
     	if(new File(no_data).exists()){
         	Form<Scan> filledForm = myForm.fill(job);
@@ -88,6 +92,8 @@ public class Application extends Controller {
         	filledForm.reject("ps_data", "Phosphorylation site position does not match! " + job.ps_error.get(0));
         	return badRequest(scan.render(filledForm));
         }
+        
+        
 
         try{
         	job.html = Help.readFile(Application.jobPath(job.job_id) + "html.txt");

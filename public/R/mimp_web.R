@@ -24,6 +24,8 @@ data = mimp(muts=ARGS$mut, seqs=ARGS$fasta, psites=ARGS$phos, perc.bg=ARGS$beta,
             display.results=F, include.cent=T, model.data = ARGS$mdata)
 sink()
 
+if(is.null(data)) data = data.frame()
+
 if(nrow(data) == 0){
   no_data = file.path("public", "jobs", ARGS$jobid, "no_data");
   writeLines('', no_data)

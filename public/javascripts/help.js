@@ -53,8 +53,9 @@ $('#submitForm').click(function(event){
     // Set mutation data to be the unique ones
     $('#mut_data').val(mut_data.join('\n'));
     
-    if(!fastaValid()){
-        addError('#fasta_data', 'Invalid data! Please provide sequences in FASTA format. For more information see the <a class="error-link" target="_blank" href="/help">help page</a> or click "Load sample" for example data.');
+    fv = fastaValid();
+    if(!fv.valid){
+        addError('#fasta_data', 'Error on line '+fv.line+': '+fv.msg+'!<br>Please provide sequences in correct FASTA format. For more information see the <a class="error-link" target="_blank" href="/help">help page</a> or click "Load sample" for example data.');
         valid = false;
     }
     if(!mutValid()){
@@ -73,11 +74,13 @@ $('#submitForm').click(function(event){
 var fastaValid = function(){
     s = $('#fasta_data').val();
     var aa_regex = new RegExp('[^ARNDCQEGHILKMFPSTWYVBZ\*_-]+','gi');
+    var header_regex = new RegExp('^>[\\w].*');
     s = s.trim().split('\n');
     header = false;
     seq = 0;
     if(s[0][0] != '>'){
-        return false;
+    	return {valid:false, msg:"headers must begin with '>'", line:1};
+    	//return false;
     }
     for(var i = 0; i < s.length; i++){
         z = s[i];
@@ -85,9 +88,15 @@ var fastaValid = function(){
             //console.log(i + ' blank');
             continue;
         }else if(z[0] == '>'){ 
+        	if(!header_regex.test(z)){
+            	return {valid:false, msg:"headers must begin with '>', followed by alphanumerics", line:i+1};
+        		// Header should start with a letter (no space);
+        		// return false;
+        	}
             if( i != 0 & seq == 0 ){
+            	return {valid:false, msg:"header has no sequence", line:i+1};
                 //console.log(i + ' some header has no sequences');
-                return false;
+                //return false;
             }
             seq = 0;
             //console.log(i + ' header');
@@ -95,17 +104,24 @@ var fastaValid = function(){
         }else if(aa_regex.test(z)){
             //console.log(i + ' invalid line');
             //Invalid fasta
-            return false;
+        	return {valid:false, msg:"invalid amino acid sequence", line:i+1};
+            //return false;
         }else{
             //console.log(i + ' incr');
             seq++;
         }
     }
     //console.log(seq)
-    if(seq < 1 || !header){
-        return false;
+    if(!header){
+    	return {valid:false, msg:"sequence has no header", line:s.length};
     }
-    return true;
+    if(seq < 1){
+    	return {valid:false, msg:"header has no sequence", line:s.length};
+        //return false;
+    }
+
+	return {valid:true, msg:"", line:0};
+    //return true;
 
 }
 

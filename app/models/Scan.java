@@ -28,6 +28,7 @@ public class Scan implements Runnable {
 	public String html;
 	public List<String> mut_error;
 	public List<String> ps_error;
+	public Boolean has_error;
 	
 	public Scan(){
 		job_id = "";
@@ -40,6 +41,7 @@ public class Scan implements Runnable {
 		model_data = "hconf";
 		mut_error = new ArrayList();
 		ps_error = new ArrayList();
+		has_error = false;
 	}
 	
 	public String toString(){
@@ -106,10 +108,13 @@ public class Scan implements Runnable {
 					String gene = sp[0];
 					int ps_pos = Integer.parseInt(sp[1]);
 					String seq = fa.get(gene);
-					String obs_aa = seq.charAt(ps_pos - 1) + "";
-					if(!obs_aa.matches("^[S|T|Y]$")){
-						ps_error.add(gene + " " + ps_pos + ": expected 'S', 'T', or 'Y', found '" + obs_aa +"'");
+					if(null != seq){
+						String obs_aa = seq.charAt(ps_pos - 1) + "";
+						if(!obs_aa.matches("^[S|T|Y]$")){
+							ps_error.add(gene + " " + ps_pos + ": expected 'S', 'T', or 'Y', found '" + obs_aa +"'");
+						}
 					}
+					
 				}
 				
 				if(!ps_error.isEmpty()){
@@ -157,8 +162,11 @@ public class Scan implements Runnable {
 	    	//Help.writeFile(mut_error.toString(), "err.txt");
 	    	Application.writeJsonJobToFile(this);
 		} catch (Exception e) {
+			this.has_error = true;
+			Application.writeJsonJobToFile(this);
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			
 		} 
 	}
 }
