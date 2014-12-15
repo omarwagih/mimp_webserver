@@ -73,7 +73,7 @@ $('#submitForm').click(function(event){
 
 var fastaValid = function(){
     s = $('#fasta_data').val();
-    var aa_regex = new RegExp('[^ARNDCQEGHILKMFPSTWYVBZ\*_-]+','gi');
+    var aa_regex = new RegExp('[^A-Z\*]+','gi');
     var header_regex = new RegExp('^>[\\w].*');
     s = s.trim().split('\n');
     header = false;
