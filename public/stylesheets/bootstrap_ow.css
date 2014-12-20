@@ -1002,7 +1002,8 @@ pre code {
 
 @media (min-width: 768px) {
   .container {
-    max-width: 750px;
+    /*max-width: 750px;*/
+    max-width: 85%;
   }
   .col-sm-1,
   .col-sm-2,
@@ -1317,9 +1318,12 @@ pre code {
   }
 }
 
+
 @media (min-width: 1200px) {
   .container {
-    max-width: 1170px;
+    /*max-width: 1170px;*/
+    /*added by omarwagih 201214*/
+    max-width: 85%;
   }
   .col-lg-1,
   .col-lg-2,
@@ -1479,6 +1483,7 @@ pre code {
     margin-left: 91.66666666666666%;
   }
 }
+
 
 table {
   max-width: 100%;

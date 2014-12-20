@@ -24,6 +24,7 @@ data = mimp(muts=ARGS$mut, seqs=ARGS$fasta, psites=ARGS$phos, perc.bg=ARGS$beta,
             display.results=F, include.cent=T, model.data = ARGS$mdata)
 sink()
 
+print(data)
 if(is.null(data)) data = data.frame()
 
 if(nrow(data) == 0){
