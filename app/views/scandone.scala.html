@@ -57,7 +57,7 @@
 				margin-bottom:5px;
 			}
 			
-			
+			/* 
 			thead tr th:nth-child(9){
 				display:none;
 			}
@@ -69,7 +69,7 @@
 			}
 			tbody tr td:nth-child(8){
 				display:none;
-			}
+			} */
 			thead tr th:nth-child(4){
 				display:none;
 			}
@@ -111,7 +111,7 @@
 			}
 			
 			td, .psite, .mut, .sequence, .table-tooltip{
-			font-size: 16px; font-size: 1.2vw;
+			font-size: 16px; font-size: 1.0vw;
 			}
 </style>
 
@@ -165,11 +165,11 @@
 		            </th>
 		            
 		            <th class="xs-width">
-		            	<a class='table-tooltip' data-toggle="tooltip" data-placement="top" title="Position of the phosphorylation site on the protein sequence">Pos</a>
+		            	<a class='table-tooltip' data-toggle="tooltip" data-placement="top" title="Position of the phosphorylation site on the protein sequence">Psite</a>
 	            	</th>
 	            	
 		            <th class="sm-width">
-		            	<a class='table-tooltip' data-toggle="tooltip" data-placement="top" title="Mutation affecting the phosphorylation site">Mut</a>
+		            	<a class='table-tooltip' data-toggle="tooltip" data-placement="top" title="Mutation affecting the phosphorylation site">Mut.</a>
 		            </th>
 		            
 		            <th class="sm-width">
@@ -189,12 +189,8 @@
 	            	</th>
 	            	
 		            <th  class="sm-width">
-	            		<a class='table-tooltip' data-toggle="tooltip" data-placement="top" title="Percentile of wt score in the foreground (loss event) or background (gain) distribution. ">Perc wt</a>
+	            		<a class='table-tooltip' data-toggle="tooltip" data-placement="top" title="Probability of the rewiring event">Prob.</a>
             		</th>
-            		
-		            <th  class="sm-width">
-		            	<a class='table-tooltip' data-toggle="tooltip" data-placement="top" title="Percentile of mt score in the foreground (loss event) or background (gain) distribution">Perc mt</a>
-		            </th>
 		            
 		            <th  class="sm-width">
 		            	<a class='table-tooltip' data-toggle="tooltip" data-placement="top" title="Log2 ratio between mutant and wild type scores">Log ratio</a>
@@ -365,14 +361,17 @@
 				pwm_img = row.find('.seq-logo .logo');
 				pwm_src = pwm_img.attr('src');
 
-				wt_dist = wt_score > mt_score ? "FG" : "BG";
-				mt_dist = mt_score > wt_score ? "FG" : "BG";
+				//wt_dist = wt_score > mt_score ? "FG" : "BG";
+				//mt_dist = mt_score > wt_score ? "FG" : "BG";
 
-				wt_perc = (+row.find('.wt-perc').text() * 100).toFixed(2);
-				mt_perc = (+row.find('.mt-perc').text() * 100).toFixed(2);
+				//wt_perc = (+row.find('.wt-perc').text() * 100).toFixed(2);
+				//mt_perc = (+row.find('.mt-perc').text() * 100).toFixed(2);
 
-				wt_score_p = wt_score + "<br>" + "<small>(" + wt_perc + "% " + wt_dist + ")</small>";
-				mt_score_p = mt_score + "<br>" + "<small>(" + mt_perc + "% " + mt_dist + ")</small>";
+				//wt_score_p = wt_score + "<br>" + "<small>(" + wt_perc + "% " + wt_dist + ")</small>";
+				//mt_score_p = mt_score + "<br>" + "<small>(" + mt_perc + "% " + mt_dist + ")</small>";
+				
+				wt_score_p = wt_score 
+				mt_score_p = mt_score 
 
 				console.log(pwm);
 
@@ -420,10 +419,9 @@
 		          } );
 		          xaxes.render();
 
-		          c = cutoffs[pwm]
-
-		          addLine(graph, c.bg, '#2980b9');
-		          addLine(graph, c.fg, '#8e44ad');
+		          //c = cutoffs[pwm]
+		          //addLine(graph, c.bg, '#2980b9');
+		          //addLine(graph, c.fg, '#8e44ad');
 		          addLine(graph, wt_score, 'green');
 		          addLine(graph, mt_score, 'red');
 

@@ -9,6 +9,22 @@ function showValue(newValue, span_id) {
 	document.getElementById(span_id).innerHTML=newValue;
 }
 
+function toggleAdvanced(){
+    if($("#advanced-div").is(":visible")){
+
+        $("#adv-label").text("Show advanced options");
+        $("#adv-icon").removeClass("fa-chevron-down");
+        $("#adv-icon").addClass("fa-chevron-right");
+        $("#advanced-div").slideUp();
+    }else{
+        $("#adv-label").text("Hide advanced options");
+        $("#adv-icon").removeClass("fa-chevron-right");
+        $("#adv-icon").addClass("fa-chevron-down");
+        $("#advanced-div").slideDown();
+    }
+
+}
+
 var addError = function(selector, message){
     $(selector).parents('.form-group').addClass('has-error');
     $(selector).siblings('.help-block').html(message);

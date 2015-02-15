@@ -21,9 +21,10 @@ public class Scan implements Runnable {
 	public String fasta_data;
 	public String mut_data;
 	public String incl_ps;
+	public Boolean incl_cent;
 	public String ps_data;
-	public Integer a_min;
-	public Integer a_max;
+	public Double p_thresh;
+	public Double log_thresh;
 	public String model_data;
 	public String html;
 	public List<String> mut_error;
@@ -36,8 +37,9 @@ public class Scan implements Runnable {
 		mut_data = "";
 		ps_data = "";
 		incl_ps = "no";
-		a_min = 90;
-		a_max = 10;
+		incl_cent = false;
+		p_thresh = 0.5;
+		log_thresh = 1.0;
 		model_data = "hconf";
 		mut_error = new ArrayList();
 		ps_error = new ArrayList();
@@ -50,8 +52,8 @@ public class Scan implements Runnable {
 				"mut_data = " + mut_data + "\n"+
 				"incl_ps = " + incl_ps + "\n"+
 				"ps_data = " + ps_data + "\n"+
-				"a_min = " + a_min + "\n"+
-				"a_max = " + a_max + "\n";
+				"p_thresh = " + p_thresh + "\n"+
+				"log_thresh = " + log_thresh + "\n";
 	}
 	
 	public String modelDataName(){
@@ -139,10 +141,11 @@ public class Scan implements Runnable {
 	            FileUtils.writeStringToFile(phos_file, ps_data+"\n");
 	        	cmd = cmd + "--phos " + phos_file.getAbsolutePath() + " ";
 	        }
-	        cmd = cmd + "--beta " + a_min + " ";
-	        cmd = cmd + "--alpha " + a_max + " ";
+	        cmd = cmd + "--pthresh " + p_thresh + " ";
+	        cmd = cmd + "--logthresh " + log_thresh + " ";
 	        cmd = cmd + "--jobid " + job_id + " ";
 	        cmd = cmd + "--mdata " + model_data + " ";
+	        if(incl_cent) cmd = cmd + "--cent yes ";
 	        
 	        StringBuilder shellOutput = new StringBuilder();
 	        Process p = Runtime.getRuntime().exec(cmd);

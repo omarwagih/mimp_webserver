@@ -8,7 +8,7 @@
 	<label for="@e.id" class="col-sm-2 control-label" data-toggle="tooltip" data-placement="bottom" title="@e.args.get('_tooltip)">
 		<abbr title="">@e.label</abbr>
 	@if(isType(e, "range")){
-		(<span class="range-perc" for="@e.id" id='@(e.id)_range'></span>%)
+		(<span class="range-perc" for="@e.id" id='@(e.id)_range'></span>)
 	}
 	</label>
 	<div class="col-sm-10">

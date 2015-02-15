@@ -1,0 +1,213 @@
+<tr> <td class="gene-name">TP53</td>
+            <td class="psite-pos">284</td>
+            <td class="mut-abbr">R282W</td>
+            <td class="mut-dist">-2</td>
+            <td class="sequence">CPGRD<a class="mut">R</a>R<a class="psite">T</a>EEENLRK<br>CPGRD<a class="mut">W</a>R<a class="psite">T</a>EEENLRK</td>
+            <td class="wt-score">0.782</td>
+            <td class="mt-score">0.0923</td>
+            <td class="prob">0.88</td>
+            <td class="log-ratio">-3.08</td>
+            <td class="effect"><a class="loss">Loss</a></td>
+            <td class="seq-logo"><a class="hide name">PAK1</a>
+                <img style="background: url(/assets/R/generate_data/highlight//-2.svg) no-repeat;"
+                src="/assets/R/generate_data/logos_newman//PAK1.svg" class="logo" alt="PAK1" /></td>
+            </tr>
+<tr> <td class="gene-name">TP53</td>
+            <td class="psite-pos">253</td>
+            <td class="mut-abbr">R248P</td>
+            <td class="mut-dist">-5</td>
+            <td class="sequence">MN<a class="mut">R</a>RPIL<a class="psite">T</a>IITLEDS<br>MN<a class="mut">P</a>RPIL<a class="psite">T</a>IITLEDS</td>
+            <td class="wt-score">0.906</td>
+            <td class="mt-score">0.0633</td>
+            <td class="prob">0.854</td>
+            <td class="log-ratio">-3.84</td>
+            <td class="effect"><a class="loss">Loss</a></td>
+            <td class="seq-logo"><a class="hide name">DYRK1B-ST</a>
+                <img style="background: url(/assets/R/generate_data/highlight//-5.svg) no-repeat;"
+                src="/assets/R/generate_data/logos_newman//DYRK1B-ST.svg" class="logo" alt="DYRK1B-ST" /></td>
+            </tr>
+<tr> <td class="gene-name">TP53</td>
+            <td class="psite-pos">284</td>
+            <td class="mut-abbr">R282W</td>
+            <td class="mut-dist">-2</td>
+            <td class="sequence">CPGRD<a class="mut">R</a>R<a class="psite">T</a>EEENLRK<br>CPGRD<a class="mut">W</a>R<a class="psite">T</a>EEENLRK</td>
+            <td class="wt-score">0.867</td>
+            <td class="mt-score">0.0623</td>
+            <td class="prob">0.819</td>
+            <td class="log-ratio">-3.8</td>
+            <td class="effect"><a class="loss">Loss</a></td>
+            <td class="seq-logo"><a class="hide name">AURKB</a>
+                <img style="background: url(/assets/R/generate_data/highlight//-2.svg) no-repeat;"
+                src="/assets/R/generate_data/logos_newman//AURKB.svg" class="logo" alt="AURKB" /></td>
+            </tr>
+<tr> <td class="gene-name">TP53</td>
+            <td class="psite-pos">253</td>
+            <td class="mut-abbr">R248P</td>
+            <td class="mut-dist">-5</td>
+            <td class="sequence">MN<a class="mut">R</a>RPIL<a class="psite">T</a>IITLEDS<br>MN<a class="mut">P</a>RPIL<a class="psite">T</a>IITLEDS</td>
+            <td class="wt-score">0.125</td>
+            <td class="mt-score">0.0327</td>
+            <td class="prob">0.818</td>
+            <td class="log-ratio">-1.94</td>
+            <td class="effect"><a class="loss">Loss</a></td>
+            <td class="seq-logo"><a class="hide name">RPS6KA1</a>
+                <img style="background: url(/assets/R/generate_data/highlight//-5.svg) no-repeat;"
+                src="/assets/R/generate_data/logos_newman//RPS6KA1.svg" class="logo" alt="RPS6KA1" /></td>
+            </tr>
+<tr> <td class="gene-name">TP53</td>
+            <td class="psite-pos">284</td>
+            <td class="mut-abbr">R282W</td>
+            <td class="mut-dist">-2</td>
+            <td class="sequence">CPGRD<a class="mut">R</a>R<a class="psite">T</a>EEENLRK<br>CPGRD<a class="mut">W</a>R<a class="psite">T</a>EEENLRK</td>
+            <td class="wt-score">0.736</td>
+            <td class="mt-score">0.104</td>
+            <td class="prob">0.784</td>
+            <td class="log-ratio">-2.83</td>
+            <td class="effect"><a class="loss">Loss</a></td>
+            <td class="seq-logo"><a class="hide name">PRKCD</a>
+                <img style="background: url(/assets/R/generate_data/highlight//-2.svg) no-repeat;"
+                src="/assets/R/generate_data/logos_newman//PRKCD.svg" class="logo" alt="PRKCD" /></td>
+            </tr>
+<tr> <td class="gene-name">CTNNB1</td>
+            <td class="psite-pos">33</td>
+            <td class="mut-abbr">S37F</td>
+            <td class="mut-dist">4</td>
+            <td class="sequence">QQQSYLD<a class="psite">S</a>GIH<a class="mut">S</a>GAT<br>QQQSYLD<a class="psite">S</a>GIH<a class="mut">F</a>GAT</td>
+            <td class="wt-score">0.535</td>
+            <td class="mt-score">0.15</td>
+            <td class="prob">0.764</td>
+            <td class="log-ratio">-1.83</td>
+            <td class="effect"><a class="loss">Loss</a></td>
+            <td class="seq-logo"><a class="hide name">GSK3B</a>
+                <img style="background: url(/assets/R/generate_data/highlight//4.svg) no-repeat;"
+                src="/assets/R/generate_data/logos_newman//GSK3B.svg" class="logo" alt="GSK3B" /></td>
+            </tr>
+<tr> <td class="gene-name">CTNNB1</td>
+            <td class="psite-pos">33</td>
+            <td class="mut-abbr">S37F</td>
+            <td class="mut-dist">4</td>
+            <td class="sequence">QQQSYLD<a class="psite">S</a>GIH<a class="mut">S</a>GAT<br>QQQSYLD<a class="psite">S</a>GIH<a class="mut">F</a>GAT</td>
+            <td class="wt-score">0.484</td>
+            <td class="mt-score">0.147</td>
+            <td class="prob">0.735</td>
+            <td class="log-ratio">-1.72</td>
+            <td class="effect"><a class="loss">Loss</a></td>
+            <td class="seq-logo"><a class="hide name">GSK3A</a>
+                <img style="background: url(/assets/R/generate_data/highlight//4.svg) no-repeat;"
+                src="/assets/R/generate_data/logos_newman//GSK3A.svg" class="logo" alt="GSK3A" /></td>
+            </tr>
+<tr> <td class="gene-name">TP53</td>
+            <td class="psite-pos">253</td>
+            <td class="mut-abbr">R248P</td>
+            <td class="mut-dist">-5</td>
+            <td class="sequence">MN<a class="mut">R</a>RPIL<a class="psite">T</a>IITLEDS<br>MN<a class="mut">P</a>RPIL<a class="psite">T</a>IITLEDS</td>
+            <td class="wt-score">0.51</td>
+            <td class="mt-score">0.0664</td>
+            <td class="prob">0.73</td>
+            <td class="log-ratio">-2.94</td>
+            <td class="effect"><a class="loss">Loss</a></td>
+            <td class="seq-logo"><a class="hide name">TTBK2</a>
+                <img style="background: url(/assets/R/generate_data/highlight//-5.svg) no-repeat;"
+                src="/assets/R/generate_data/logos_newman//TTBK2.svg" class="logo" alt="TTBK2" /></td>
+            </tr>
+<tr> <td class="gene-name">TP53</td>
+            <td class="psite-pos">253</td>
+            <td class="mut-abbr">R248P</td>
+            <td class="mut-dist">-5</td>
+            <td class="sequence">MN<a class="mut">R</a>RPIL<a class="psite">T</a>IITLEDS<br>MN<a class="mut">P</a>RPIL<a class="psite">T</a>IITLEDS</td>
+            <td class="wt-score">0.654</td>
+            <td class="mt-score">0.173</td>
+            <td class="prob">0.724</td>
+            <td class="log-ratio">-1.92</td>
+            <td class="effect"><a class="loss">Loss</a></td>
+            <td class="seq-logo"><a class="hide name">MST4</a>
+                <img style="background: url(/assets/R/generate_data/highlight//-5.svg) no-repeat;"
+                src="/assets/R/generate_data/logos_newman//MST4.svg" class="logo" alt="MST4" /></td>
+            </tr>
+<tr> <td class="gene-name">TP53</td>
+            <td class="psite-pos">253</td>
+            <td class="mut-abbr">R248P</td>
+            <td class="mut-dist">-5</td>
+            <td class="sequence">MN<a class="mut">R</a>RPIL<a class="psite">T</a>IITLEDS<br>MN<a class="mut">P</a>RPIL<a class="psite">T</a>IITLEDS</td>
+            <td class="wt-score">0.135</td>
+            <td class="mt-score">0.741</td>
+            <td class="prob">0.679</td>
+            <td class="log-ratio">2.46</td>
+            <td class="effect"><a class="gain">Gain</a></td>
+            <td class="seq-logo"><a class="hide name">STK36</a>
+                <img style="background: url(/assets/R/generate_data/highlight//-5.svg) no-repeat;"
+                src="/assets/R/generate_data/logos_newman//STK36.svg" class="logo" alt="STK36" /></td>
+            </tr>
+<tr> <td class="gene-name">TP53</td>
+            <td class="psite-pos">284</td>
+            <td class="mut-abbr">R282W</td>
+            <td class="mut-dist">-2</td>
+            <td class="sequence">CPGRD<a class="mut">R</a>R<a class="psite">T</a>EEENLRK<br>CPGRD<a class="mut">W</a>R<a class="psite">T</a>EEENLRK</td>
+            <td class="wt-score">0.838</td>
+            <td class="mt-score">0.0881</td>
+            <td class="prob">0.663</td>
+            <td class="log-ratio">-3.25</td>
+            <td class="effect"><a class="loss">Loss</a></td>
+            <td class="seq-logo"><a class="hide name">RPS6KA5</a>
+                <img style="background: url(/assets/R/generate_data/highlight//-2.svg) no-repeat;"
+                src="/assets/R/generate_data/logos_newman//RPS6KA5.svg" class="logo" alt="RPS6KA5" /></td>
+            </tr>
+<tr> <td class="gene-name">TP53</td>
+            <td class="psite-pos">253</td>
+            <td class="mut-abbr">R248P</td>
+            <td class="mut-dist">-5</td>
+            <td class="sequence">MN<a class="mut">R</a>RPIL<a class="psite">T</a>IITLEDS<br>MN<a class="mut">P</a>RPIL<a class="psite">T</a>IITLEDS</td>
+            <td class="wt-score">0.207</td>
+            <td class="mt-score">0.0348</td>
+            <td class="prob">0.657</td>
+            <td class="log-ratio">-2.57</td>
+            <td class="effect"><a class="loss">Loss</a></td>
+            <td class="seq-logo"><a class="hide name">AKT1</a>
+                <img style="background: url(/assets/R/generate_data/highlight//-5.svg) no-repeat;"
+                src="/assets/R/generate_data/logos_newman//AKT1.svg" class="logo" alt="AKT1" /></td>
+            </tr>
+<tr> <td class="gene-name">TP53</td>
+            <td class="psite-pos">284</td>
+            <td class="mut-abbr">R282W</td>
+            <td class="mut-dist">-2</td>
+            <td class="sequence">CPGRD<a class="mut">R</a>R<a class="psite">T</a>EEENLRK<br>CPGRD<a class="mut">W</a>R<a class="psite">T</a>EEENLRK</td>
+            <td class="wt-score">0.412</td>
+            <td class="mt-score">0.15</td>
+            <td class="prob">0.639</td>
+            <td class="log-ratio">-1.46</td>
+            <td class="effect"><a class="loss">Loss</a></td>
+            <td class="seq-logo"><a class="hide name">PRKCA</a>
+                <img style="background: url(/assets/R/generate_data/highlight//-2.svg) no-repeat;"
+                src="/assets/R/generate_data/logos_newman//PRKCA.svg" class="logo" alt="PRKCA" /></td>
+            </tr>
+<tr> <td class="gene-name">TP53</td>
+            <td class="psite-pos">284</td>
+            <td class="mut-abbr">R282W</td>
+            <td class="mut-dist">-2</td>
+            <td class="sequence">CPGRD<a class="mut">R</a>R<a class="psite">T</a>EEENLRK<br>CPGRD<a class="mut">W</a>R<a class="psite">T</a>EEENLRK</td>
+            <td class="wt-score">0.217</td>
+            <td class="mt-score">0.0266</td>
+            <td class="prob">0.587</td>
+            <td class="log-ratio">-3.03</td>
+            <td class="effect"><a class="loss">Loss</a></td>
+            <td class="seq-logo"><a class="hide name">PRKACA</a>
+                <img style="background: url(/assets/R/generate_data/highlight//-2.svg) no-repeat;"
+                src="/assets/R/generate_data/logos_newman//PRKACA.svg" class="logo" alt="PRKACA" /></td>
+            </tr>
+<tr> <td class="gene-name">TP53</td>
+            <td class="psite-pos">253</td>
+            <td class="mut-abbr">R248P</td>
+            <td class="mut-dist">-5</td>
+            <td class="sequence">MN<a class="mut">R</a>RPIL<a class="psite">T</a>IITLEDS<br>MN<a class="mut">P</a>RPIL<a class="psite">T</a>IITLEDS</td>
+            <td class="wt-score">0.323</td>
+            <td class="mt-score">0.0458</td>
+            <td class="prob">0.552</td>
+            <td class="log-ratio">-2.82</td>
+            <td class="effect"><a class="loss">Loss</a></td>
+            <td class="seq-logo"><a class="hide name">SGK1</a>
+                <img style="background: url(/assets/R/generate_data/highlight//-5.svg) no-repeat;"
+                src="/assets/R/generate_data/logos_newman//SGK1.svg" class="logo" alt="SGK1" /></td>
+            </tr>
+<div id="n_mut" style="display:none">3</div>
+<div id="n_gain" style="display:none">1</div>
+<div id="n_loss" style="display:none">14</div>

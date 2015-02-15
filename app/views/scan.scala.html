@@ -100,25 +100,6 @@
                   }
                  
                   
-                  @helper.input(myForm("a_min"), '_label -> "β cutoff", '_type -> "range", '_tooltip -> "This value is used to compute a threshold as the score at the β percentile of the negative (background) distribution of scores. By default this is the 90th percentile of the background distribution of scores. Anything below the threshold is considered a negative hit. For more information, see the help section.") { (id, name, value, args) =>
-                    	<input id="@id" name="@id" class="form-control" type="range" min="1" max="100" value="@value" step="1" onchange="showValue(this.value, 'a_min_range')">
-                  }
-                  
-                  @helper.input(myForm("a_max"), '_label -> "α cutoff", '_type -> "range", '_tooltip -> "This value is used to compute a threshold as the percentile at the α percentile of the positive (foreground) distribution of scores. By default this is the 10th percentile of the foreground distribution of scores. Anything above the threshold is considered a positive hit. For more information, see the help section.") { (id, name, value, args) =>
-                    	<input id="@id" name="@id" class="form-control" type="range" min="1" max="100" value="@value" step="1" onchange="showValue(this.value, 'a_max_range')">
-                  }
-                  
-                  <!-- 
-                  @@helper.input(myForm("fam_models"), '_label -> "Specificity models", '_type -> "checkbox", '_tooltip -> "By default, individual kinase specificity models used to scan for rewiring events. If you would like to use specificity models of the kinase families, check this box") { (id, name, value, args) =>
-                    	<div class="checkbox">
-                    	<label>
-                    		<input id="@@id" name="@@id" type="checkbox"  >
-                    		Use kinase family models
-               
-                    	</label>
-                    	</div>
-                  } -->
-                  
                    @helper.input(myForm("model_data"), '_label -> "Specificity model data", '_type -> "checkbox", '_tooltip -> "The specificity models used in the analysis. By default, individual experimental kinase specificity models are used to scan for rewiring events. Other specificity models e.g. experimental kinase family models, or predicted models (low confidence) can also be selected. For more details on the different selections, see the help section.") { (id, name, value, args) =>
                     	<select class="form-control" id="@id" name="@id" style="width:50%">
 						  <option @if(myForm("model_data").value == "hconf"){selected} value="hconf">Individual kinase models (124)</option>
@@ -126,6 +107,50 @@
 						  <option @if(myForm("model_data").value == "lconf"){selected} value="lconf">Predicted individual kinase models (294)</option>
 						</select>
                   }
+                  
+                  
+                  <!-- 
+                  <div class="form-group">
+                  	<label class="col-sm-2 control-label"></label>
+                  	<div class="col-sm-10">
+						<a style="font-size:18px; font-weight:200" class="no-underline hand" onclick="toggleAdvanced()"><i id="adv-icon" class="fa fa-chevron-right"></i> <span id="adv-label">Show advanced options</span></a>
+				    </div>
+				  </div>
+				   -->
+				   
+				   <hr style="color:#333">
+				  <div class="form-group">
+                  	<label class="col-sm-2 control-label"></label>
+                  	<div class="col-sm-10">
+						<a style="font-size:18px; color:#2c3e50" class="no-underline"><i id="adv-icon" class="fa fa-cog"></i> <span id="adv-label">Advanced options</span></a>
+				    </div>
+				  </div>
+				  
+                  <div id="advanced-div">
+                  
+                  @helper.input(myForm("p_thresh"), '_label -> "Probability threshold", '_type -> "range", '_tooltip -> "Probability threshold of gain or loss event. Only events with probabilities above this value are retained.") { (id, name, value, args) =>
+                    	<input id="@id" name="@id" class="form-control" type="range" min="0.5" max=1 value="@value" step="0.01" onchange="showValue(this.value, 'p_thresh_range')">
+                  }
+                  
+                  @helper.input(myForm("log_thresh"), '_label -> Html("Log<sub>2</sub> threshold"), '_type -> "range", '_tooltip -> "Threshold of the absolute log ratio between the wild type and mutant score. Only events with absolute log ratios above this value are retained.") { (id, name, value, args) =>
+                    	<input id="@id" name="@id" class="form-control" type="range" min="0" max="20" value="@value" step="0.01" onchange="showValue(this.value, 'log_thresh_range')">
+                  }
+                  
+                  
+                  @helper.input(myForm("incl_cent"), '_label -> "Include central residue", '_tooltip -> "Scan for events caused by mutation in the central phosphorylation residue. If not selected, only mutations affecting flanking residues are considered.") { (id, name, value, args) =>
+                  
+	                  <div class="checkbox">
+					    <label>
+					      <input type="checkbox" name="@id" id="@id" @if(value){checked}>
+					      <!-- <input type="hidden" name="@id" value="@value" /> -->
+					      Scan for events caused by mutation in the central phosphorylation residue
+					    </label>
+					  </div>
+                  
+                  }
+                  
+                  </div>
+                  
                   <hr>
                   <div class="form-group">
                     <div class="col-lg-6 col-lg-offset-4">

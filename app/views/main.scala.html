@@ -1,7 +1,8 @@
 @(title: String, header: String, subheader: String)(content: Html)
 
 <!DOCTYPE html>
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html lang="en"><head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>MIMP &middot; @title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
@@ -17,10 +18,9 @@
     
     <link rel="stylesheet" href="@routes.Assets.at("javascripts/intensezoom/intense.css")">
     <link rel="stylesheet" href="@routes.Assets.at("stylesheets/csshake.min.css")">
-    <!-- 
-    <script src="@routes.Assets.at("javascripts/introjs/intro.js")"></script>
-    <link rel="stylesheet" href="@routes.Assets.at("javascripts/introjs/introjs.css")">
-	-->
+    
+    
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <script>
       $( document ).ready(function() {
          $('.selectpicker').selectpicker();
@@ -99,6 +99,9 @@ background-color: #18bc9c;
 .clickable { cursor: pointer; cursor: hand; }
 
     </style>
+    
+    
+    <link rel="stylesheet" rel="shortcut icon" href="@routes.Assets.at("images/favicon.ico?v=2")">
   </head>
   <body style="padding-top:0px">
   
@@ -161,7 +164,7 @@ background-color: #18bc9c;
             <li><a target="_blank" href="https://github.com/omarwagih/rmimp/issues">Issues</a></li>
             <li><a href="@routes.Application.about">Contact</a></li>
           </ul>
-          <p>&copy; 2014 <a href="http://baderlab.com" target="_blank">Bader Lab</a> University of Toronto </p>
+          <p>&copy; 2015 <a href="http://baderlab.com" target="_blank">Bader Lab</a> University of Toronto </p>
           <br>
           <img src="@routes.Assets.at("images/footer_logo.png")" style="height:70px;margin-left:-5px"/>
           

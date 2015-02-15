@@ -44,17 +44,6 @@ seq1 9</pre>
 
   <hr>
   
-  <h4>What are the &alpha; and &beta; cutoffs?</h4>
-  <p>Once a score is obtained for both the wild-type and mutant phosphosite, MIMP will use kinase specificity models to score phosphosites that belong to a kinase (positive) and that do not (negative). This results in two distributions being generated: foreground and background. &alpha; and &beta; represent percentiles of the foreground and background distributions, respectively. In order for a loss-of-signalling event to occur, the score of the wild-type phosphosite must be greater than the score at the &alpha; percentile and the score of the mutant phosphosite must be less than the score at the &beta; percentile. This is vice versa for gain-of-phosphorylation.
-  </p>
-  <p>
-
-  By default, &beta; is the 90th percentile and &alpha; is 10th percentile:
-  </p>
-
-  <img src="@routes.Assets.at("images/fig3.png")" >
-
-  <hr>
   
   <h4>What are the different kinase specificity models?</h4>
   <p>There are three different sets of specificity models. The chosen set is used in the scanning of phosphorylation rewiring in MIMP. </p>
@@ -73,18 +62,34 @@ seq1 9</pre>
   
   <h4>What do the scores mean?</h4>
   <p>The scores quantitatively represent how well a phosphosite is likely to be phosphorylated by a kinase. Scores range from 0-1, where 0 represents no predicted phosphorylation and 1 represents perfect phosphorylation. 
-  <br>If a peptide has a score of -1, this means it cannot be assigned a score because the central residue has been mutated to or from a non STY residue and a kinase will never phosphorylate it. For example, <code>HAWNKDR<u>T</u>QIAICPN</code> will have a score between 0-1, while <code>HAWNKDR<u>A</u>QIAICPN</code> will have a score of -1.</p>
+  <br>Peptides are automatically given a score of 0 if they have a central residue which does not match the class of the specificity model it is being scored against. There are two classes of specifcity models: serine/threonine models and tyrosine models. For example, if the tyrosine-centered phosphosite <code>HAWNKDR<u>Y</u>QIAICPN</code> is scored against a serine/threonine model, it will always have a score of 0. If a peptide is mutated at the central residue to a non-STY residue, e.g. <code>HAWNKDR<u>A</u>QIAICPN</code> it will always have a score of 0.</p>
 
   <hr>
   
+  <h4>What is the probability threshold?</h4>
+  <p>Once a score is obtained for both the wild type and mutant phosphosite, MIMP will use kinase specificity models to score phosphosites that belong to a kinase (positive) and that do not (negative). This results in two distributions being generated: foreground (FG) and background (BG). 
+  MIMP then computes a probability of the wild type or mutant score falling under either one of those distributions.  
+  </p>
+  <p>
+	The probability of a phosphorylation loss is computed as the joint probability of the wild type score falling under the FG and the mutant score falling under the BG. 
+	Similarly, the probability of a phosphorylation gain is computed as the joint probability of the wild type score falling under the BG and the mutant score falling under the FG. 
+  </p>
+	
+  <p>
+  	Since the joint probability is computed as the product of the individual probabilities, the minimum probablity required for a phosphorylation loss or gain to be called is 0.5. Any events with gain or loss probabilities less than the probability threshold are discarded. 
+  	The threshold of 0.5 should suffice for calling gains and losses. However, you may wish to increase this threshold to display only events of higher confidence. 
+  </p>
+
+  <hr>
+  
+  
   <h4>What does the log ratio mean?</h4>
-  <p>The log ratio measures how distant the wild-type score is from the mutant, which we use as a measure of how confident we are of an event occurring. A high positive log ratio represents a high confidence gain-of-phosphorylation event. A high negative log ratio represents a high confidence loss-of-phosphorylation event. We consider the following confidence intervals for the absolute value of the log ratio:</p>
-  <ul>
-  <li>Low confidence: 0-1</li>
-  <li>Medium confidence 1-2</li>
-  <li>High confidence: 2 or greater</li>
-  </ul>
-  <p><em>Note:</em> If the log ratio has a value of <code>-</code>, this means a log ratio cannot be assigned due to the fact that one of the scores has a value of -1. You can assume this log ratio is of high confidence <em>i.e.</em> approaches infinity (for gains) or -infinity (for losses)</p>
+  <p>The log ratio measures how distant the wild-type score is from the mutant. A high positive log ratio represents a high confidence gain-of-phosphorylation event. 
+  A high negative log ratio represents a high confidence loss-of-phosphorylation event.</p>
+  
+  <p>Events with a log ratio below the log ratio threshold are discarded. By default, this threshold is 1, but can be increased for in the options panel.
+  
+  <p><em>Note:</em> If the log ratio has a value of <code>-</code>, this means a log ratio cannot be assigned due to the fact that one of the scores has a value of 0. You can assume this log ratio is of high confidence <em>i.e.</em> approaches infinity (for gains) or -infinity (for losses)</p>
 
   <hr>
   

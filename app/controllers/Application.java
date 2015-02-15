@@ -129,6 +129,7 @@ public class Application extends Controller {
             
             Logger.info("JOB HAS ID = "+ job.job_id);
             Logger.info("MODEL DATA = "+ job.model_data);
+            Logger.info("CENT = "+ job.incl_cent);
         	//job.job_id = 
             String jobid = UUID.randomUUID().toString();
             if(job.job_id != ""){

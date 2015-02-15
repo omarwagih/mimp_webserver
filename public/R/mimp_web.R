@@ -7,8 +7,9 @@ option_list <- list(
   make_option(c("-f", "--fasta"), help="Fasta file" ),
   make_option(c("-m", "--mut"), help="Mutation data", default=NULL),
   make_option(c("-p", "--phos"), help="Phosphorylation data" ),
-  make_option(c("-i", "--beta"), help="Lower percentile", type="integer", default=90),
-  make_option(c("-j", "--alpha"), help="Upper percentile" , type="integer", default=10),
+  make_option(c("-i", "--pthresh"), help="Probability threshold", type="numeric", default=0.5),
+  make_option(c("-j", "--logthresh"), help="Log2 threshold" , type="numeric", default=1),
+  make_option(c("-c", "--cent"), help="Do central", type="character", default="no"),
   make_option(c("-x", "--mdata"), help="Use kinase family models or predicted models", default="hconf"),
   make_option(c("-u", "--jobid"), help="Job ID")
 )
@@ -16,15 +17,17 @@ option_list <- list(
 ARGS=parse_args(OptionParser(option_list = option_list));
 fam = ifelse(is.null(ARGS$fam), FALSE, TRUE )
 ARGS$fam = fam
+
+ARGS$cent = ifelse(ARGS$cent == "no", FALSE, TRUE)
+
 print(ARGS)
 
 # Process without output
 sink("/dev/null"); 
-data = mimp(muts=ARGS$mut, seqs=ARGS$fasta, psites=ARGS$phos, perc.bg=ARGS$beta, perc.fg=ARGS$alpha, 
-            display.results=F, include.cent=T, model.data = ARGS$mdata)
+data = mimp(muts=ARGS$mut, seqs=ARGS$fasta, psites=ARGS$phos, prob.thresh=ARGS$pthresh, log2.thresh=ARGS$logthresh, 
+            display.results=F, include.cent=ARGS$cent, model.data = ARGS$mdata)
 sink()
 
-print(data)
 if(is.null(data)) data = data.frame()
 
 if(nrow(data) == 0){
@@ -32,14 +35,9 @@ if(nrow(data) == 0){
   writeLines('', no_data)
 }else{
   data_path = file.path("public", "jobs", ARGS$jobid, "results.txt");
-  cutoffs_path = file.path("public", "jobs", ARGS$jobid, "cutoffs.txt");
   html_path = file.path("public", "jobs", ARGS$jobid, "html.txt");
-  write.table(data, data_path, quote=F, sep="\t", row.names=F);
-  
-  cutoffs = attr(data, "cutoffs")
-  js = paste0('"',cutoffs$pwm,'":{','"bg":',cutoffs$bg, ',"fg":', cutoffs$fg, '}', collapse=",")
-  js = paste0('cutoffs = {', js, '}');
-  writeLines(js, cutoffs_path)
+
+  write.table(format(data, digits=4), data_path, quote=F, sep="\t", row.names=F);
   
   z = sprintf('/assets/R/generate_data/logos%s/', c('', '_fam', '_newman'))
   names(z) = c('hconf', 'hconf-fam', 'lconf')

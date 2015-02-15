@@ -91,6 +91,13 @@ color: #2c3e50;
 font-size: 20px !important;
 }
 
+.hand{
+    cursor: pointer; cursor: hand;
+}
+
+.no-underline, .no-underline:hover{
+    text-decoration: none;
+}
 
 #result-loader {
 	position: fixed;
