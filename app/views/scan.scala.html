@@ -141,7 +141,7 @@
                   
 	                  <div class="checkbox">
 					    <label>
-					      <input type="checkbox" name="@id" id="@id" @if(value){checked}>
+					      <input type="checkbox" name="@id" id="@id" @if(myForm("incl_cent").value == "true"){checked}>
 					      <!-- <input type="hidden" name="@id" value="@value" /> -->
 					      Scan for events caused by mutation in the central phosphorylation residue
 					    </label>

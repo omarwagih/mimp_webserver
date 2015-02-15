@@ -24,7 +24,8 @@ print(ARGS)
 
 # Process without output
 sink("/dev/null"); 
-data = mimp(muts=ARGS$mut, seqs=ARGS$fasta, psites=ARGS$phos, prob.thresh=ARGS$pthresh, log2.thresh=ARGS$logthresh, 
+data = mimp(muts=ARGS$mut, seqs=ARGS$fasta, psites=ARGS$phos, 
+            prob.thresh=ARGS$pthresh, log2.thresh=ARGS$logthresh, 
             display.results=F, include.cent=ARGS$cent, model.data = ARGS$mdata)
 sink()
 
@@ -35,9 +36,12 @@ if(nrow(data) == 0){
   writeLines('', no_data)
 }else{
   data_path = file.path("public", "jobs", ARGS$jobid, "results.txt");
+  writeLines(sprintf('Data path = %s', data_path))
   html_path = file.path("public", "jobs", ARGS$jobid, "html.txt");
+  writeLines(sprintf('HTML path = %s', html_path))
 
   write.table(format(data, digits=4), data_path, quote=F, sep="\t", row.names=F);
+  writeLines('Written data')
   
   z = sprintf('/assets/R/generate_data/logos%s/', c('', '_fam', '_newman'))
   names(z) = c('hconf', 'hconf-fam', 'lconf')
@@ -46,6 +50,7 @@ if(nrow(data) == 0){
   hl_path = '/assets/R/generate_data/highlight/'
   html = dohtml(data, LOGO_DIR = logo_path, HL_DIR = hl_path)
   writeLines(html, html_path)
+  writeLines('Written html')
 }
 
 
