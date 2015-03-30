@@ -6,6 +6,7 @@ logs
 .*
 # except for .gitignore
 !.gitignore
+!public/jobs/.gitkeep
 
 # Ignore Play! working directory #
 db
