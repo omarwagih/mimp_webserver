@@ -70,10 +70,10 @@
 			tbody tr td:nth-child(8){
 				display:none;
 			} */
-			thead tr th:nth-child(4){
+			#example thead tr th:nth-child(4){
 				display:none;
 			}
-			tbody tr td:nth-child(4){
+			#example tbody tr td:nth-child(4){
 				display:none;
 			}
 			
@@ -279,8 +279,9 @@
 	        	<thead>
 		        <tr>
 		            <th width="35%">Psite sequence</th>
-		            <th width="20%">Score wt</th>
-		            <th width="20%">Score mt</th>
+		            <th width="15%">Score wt</th>
+		            <th width="15%">Score mt</th>
+		            <th width="15%">Prob</th>
 		            <th width="15%">Log ratio</th>
 		            <th width="10%">Effect</th>
 		        </tr>
@@ -290,6 +291,7 @@
 					<td id="modal-seq"></td>
 					<td id="modal-score-wt"></td>
 					<td id="modal-score-mt"></td>
+					<td id="modal-prob"></td>
 					<td id="modal-log-ratio"></td>
 					<td id="modal-effect"></td>
 				</tr>
@@ -353,7 +355,7 @@
 				seq = row.find('.sequence').html();
 				log = row.find('.log-ratio').text();
 				eff = row.find('.effect').html();
-
+				prob = row.find('.prob').html();
 				wt_score = +row.find('.wt-score').text();
 				mt_score = +row.find('.mt-score').text();
 
@@ -380,6 +382,7 @@
 				$('#modal-seq').html(seq);
 				$('#modal-score-wt').html(wt_score_p);
 				$('#modal-score-mt').html(mt_score_p);
+				$('#modal-prob').html(prob);
 				$('#modal-log-ratio').text(log);
 				$('#modal-effect').html(eff);
 				
@@ -519,6 +522,6 @@
 		
 	</script>
 
-	<script src="/assets/jobs/@job.job_id/cutoffs.txt"></script>
+	<!-- <script src="/assets/jobs/@job.job_id/cutoffs.txt"></script> -->
 
 }

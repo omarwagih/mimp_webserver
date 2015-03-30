@@ -21,7 +21,6 @@ sc.data = sc.data[,c('gene', 'gene_acc', 'n_sample', 'cancer_types', 'mut','kina
 names(sc.data) = gsub('\\.', '_', names(sc.data))
 neg.list = readRDS('neg_phosphosites_10k_uniq_noterm.rds')
 
-
 ks = readRDS('ksr_final_08_2014.rds')
 ks_fam = readRDS('ksr_family_final_08_2014.rds')
 ks_ref = readRDS('ksr_refined_90p.rds')
