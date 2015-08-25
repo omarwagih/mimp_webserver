@@ -48,7 +48,7 @@ if(nrow(data) == 0){
   logo_path = z[ARGS$mdata]
   
   hl_path = '/assets/R/generate_data/highlight/'
-  html = dohtml(data, LOGO_DIR = logo_path, HL_DIR = hl_path)
+  html = dohtml(data, LOGO_DIR = logo_path, HL_DIR = hl_path, .webserver=TRUE)
   writeLines(html, html_path)
   writeLines('Written html')
 }
